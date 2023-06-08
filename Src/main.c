@@ -4,15 +4,29 @@
 #include "vector.h"
 #include "Balls.h"
 #include "pins.h"
+#include "timers.h"
+
+
 
 int main(void)
 {
 	// Setup communication with the PC
 	uart_init(115200);
+	clrscr();
+	hideCursor();
+	initPins();
+	configTimer();
+	while(1){
+		prntClk();
+	}
+
+
+	/*
 	initPins();
 	while(1){
 		setLed();
 	}
+*/
 
 /*
 	//kode til at lave window
