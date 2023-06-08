@@ -69,6 +69,9 @@ void clrscr(){
 	printf("%c[2J", ESC);
 }
 
+void hideCursor(){
+	printf("%c[?25l", ESC);
+}
 
 void clreol(){
 	printf("%c[2K", ESC);
