@@ -30,6 +30,7 @@ void underline(uint8_t on);
 void blink(uint8_t bl);
 void inverse(uint8_t iv);
 void clrpkt();
+void hideCursor();
 
 void drawvert(uint8_t n);
 void drawhoriz(uint8_t n);
