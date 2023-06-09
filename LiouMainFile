@@ -14,18 +14,15 @@ int main(void)
 	uart_init(9600);
 
 	
-	//Exercise 6
-	/*
-	uint8_t buffer[512];
-	lcd_init();
-	memset(buffer,0xCC,510);
-	lcd_push_buffer(buffer);
-	*/
+	//Exercise 6 - display on LCD screen
+	char TextToDisplay[] = "Fillip lugter";
+	lcd_write_text(TextToDisplay, 1);
+	//lcd_update(TextToDisplay, 1,-1);
 
+	//Current project. Starting window
 	//initWindow(0,0,90,90);
 	/*clrscr();
 	color(15,0);
-
 
 
 	//Opgave 3
