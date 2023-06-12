@@ -9,6 +9,11 @@
 #define SPACESHIP_H_
 
 #include "stm32f30x_conf.h"
+#include "pins.h"
+#include "uart.h"
+#include <math.h>
+#include "vector.h"
+
 
 typedef struct {
 
@@ -17,7 +22,6 @@ typedef struct {
 	int16_t velX;
 	int16_t velY;
 	int8_t life;
-
 } spaceship_t;
 
 void initSpaceship(spaceship_t* spaceship);

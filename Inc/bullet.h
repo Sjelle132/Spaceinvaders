@@ -8,7 +8,8 @@
 #ifndef BULLET_H_
 #define BULLET_H_
 
-
+#include "spaceship.h"
+#include "uart.h"
 #include "stm32f30x_conf.h"
 #include "spaceship.h"
 
