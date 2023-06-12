@@ -5,7 +5,7 @@
  *      Author: oscar
  */
 #include "ansi.h"
-
+#include "balls.h"
 
 
 void fgcolor(uint8_t foreground) {
@@ -116,7 +116,7 @@ void window2(uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2, int style){
 	int i;
 	if(style == 1){
 
-		gotoxy(y1,x1);
+		gotoxy(x1,y1);
 
 		printf("%c", 218);
 		for (i = 0; i < x2 - x1; i++){

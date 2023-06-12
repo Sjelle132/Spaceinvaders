@@ -5,6 +5,9 @@
 #include "Balls.h"
 #include "pins.h"
 #include "timers.h"
+#include "uart.h"
+#include "spaceship.h"
+#include "bullet.h"
 
 
 
@@ -13,22 +16,109 @@ int main(void)
 	// Setup communication with the PC
 	uart_init(115200);
 	clrscr();
+
+	//kode til at lave window
+	clrscr();
+	bgcolor(0);
+	fgcolor(15);
+	gotoxy(0,0);
+	window2(0, 0, 150, 300, 2);
+	hideCursor();
+	initPins();
+	configTimer();
+
+
+
+
+	//initialize the ball start point and velocity
+	spaceship_t spaceship;
+	initSpaceship(&spaceship);
+	spaceship.posX = 5;
+	spaceship.posY = 5;
+	spaceship.velX = 0;
+	spaceship.velY = 0;
+	spaceship.life = 3;
+	bullet_t bullet[10];
+	//initBullet(&bullet,&spaceship);
+	for(  int8_t i=0; i<10; i++)
+		spawnBullet(&bullet[i]);
+	int32_t flagbullet = 0;
+	int16_t flagspaceship = 0;
+	int8_t i = 0;
+	int32_t spawntime=0;
+	while(1){
+		uint8_t directionState = keyboardController();
+		createSpaceship(&spaceship); //draw spaceship
+		if(!(returnMilisec() == flagspaceship)){
+			removeSpaceship(&spaceship); //remove the old spaceship
+			updateSpaceship(&spaceship); //update position of the spaceship
+		}
+		flagspaceship=returnMilisec();
+
+		if(100 == directionState && !(spawntime ==returnSec())){
+			removeBullet(&bullet[i]);
+			initBullet(&bullet[i],&spaceship);
+			if(i<10)
+				i++;
+			if(i>=10)
+				i=0;
+			spawntime=returnSec();
+		}
+
+		for (int j = 0; j < 10; j++)
+			createBullet(&bullet[j]);
+
+		if (!(returnSec()%4 == flagbullet)){
+			bullet->true = 1;
+			for (int j = 0; j < 10; j++){
+				removeBullet(&bullet[j]);
+				updateBullet(&bullet[j]);
+			}
+
+		}
+		flagbullet=returnSec();
+
+
+	}
+
+
+	//removeBullet(&bullet);
+
+
+
+
+
+
+
+
+
+	/*
+	uart_clear();
+	while(1){
+
+		smthFunny1();
+
+	}
+	 */
+
+	/*
+	clrscr();
 	hideCursor();
 	initPins();
 	configTimer();
 	while(1){
 		prntClk();
 	}
-
+	 */
 
 	/*
 	initPins();
 	while(1){
 		setLed();
 	}
-*/
+	 */
 
-/*
+	/*
 	//kode til at lave window
 	clrscr();
 	bgcolor(0);
@@ -55,9 +145,9 @@ int main(void)
 		}
 	}
 }
-*/
+	 */
 
-/*
+	/*
 	vector_t vec;
 	initVector(&vec);
 
@@ -67,7 +157,7 @@ int main(void)
 
 	rotateVector(&vec,deg);
 	printf("(%d,%d) \n", vec.x, vec.y);
-*/
+	 */
 
 	//kode til at lave window
 	/*
@@ -75,7 +165,7 @@ int main(void)
 	bgcolor(0);
 	fgcolor(15);
 	window(5,5,20,20,196);
-	*/
+	 */
 
 
 	/*
@@ -88,7 +178,7 @@ int main(void)
 		printFix(expand(cosCalc(923)));
 		printf("\n");
 
-	*/
+	 */
 	while (1) {}
 }
 
