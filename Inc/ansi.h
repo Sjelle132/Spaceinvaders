@@ -32,14 +32,4 @@ void inverse(uint8_t iv);
 void clrpkt();
 void hideCursor();
 
-void drawvert(uint8_t n);
-void drawhoriz(uint8_t n);
-void initColor();
-
-
-//window
-
-
-
-
 #endif /* _ANSI_H_ */
