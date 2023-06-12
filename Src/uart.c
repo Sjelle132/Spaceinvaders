@@ -7,9 +7,6 @@
 
 
 #include "uart.h"
-#include "30010_io.h"
-#include "string.h"
-
 
 int32_t keyboardController() {
     int8_t arrayBogstaver[256];
@@ -35,9 +32,7 @@ int32_t keyboardController() {
         }else if (bogstav == 'b'){
         	directionsState = 100;
         }
-
     }
-
     arrayBogstaver[255] = '\0';
     return directionsState;
 }

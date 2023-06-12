@@ -6,8 +6,6 @@
  */
 
 #include "bullet.h"
-#include "spaceship.h"
-#include "uart.h"
 
 void initBullet(bullet_t* bullet,spaceship_t* spaceship){
 	bullet->posX = spaceship->posX;
@@ -31,9 +29,7 @@ void createBullet(bullet_t* bullet ){
 		//bullet->posX = spaceship->posX;
 		//bullet->posY = spaceship->posY;
 		printf("%c", 111);
-
 	}
-
 }
 
 void updateBullet(bullet_t* bullet) {
@@ -42,20 +38,15 @@ void updateBullet(bullet_t* bullet) {
 
 	//bullet only shooting right
 	if (bullet->true) {
+		bullet->posX += 1;
+		bullet->velX = 1;
 
-					bullet->posX += 1;
-					bullet->velX = 1;
-
-					bullet->posX = bullet->posX + bullet->velX;
-					bullet->posY = bullet->posY + bullet->velY;
-
-
+		bullet->posX = bullet->posX + bullet->velX;
+		bullet->posY = bullet->posY + bullet->velY;
 	}
 }
-
 
 void removeBullet(bullet_t* bullet) {
 	gotoxy(bullet->posX,bullet->posY);
 	printf("%c", 32);
 }
-
