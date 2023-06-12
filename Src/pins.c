@@ -57,26 +57,31 @@ void setLed(){
 
 	int16_t joystickState = readJoystick();
 
+	//pin up
 	if (joystickState == 1){
 		GPIOA->ODR = (0x0000 << 9);
 		GPIOB->ODR |= (0x0001 << 4);
 		GPIOC->ODR |= (0x0001 << 7);
 
+		//pin down
 		}else if (joystickState == 2){
 			GPIOA->ODR |= (0x0001 << 9);
 			GPIOB->ODR = (0x0000 << 4);
 			GPIOC->ODR |= (0x0001 << 7);
 
+		//pin left
 		}else if (joystickState == 4){
 			GPIOA->ODR |= (0x0001 << 9);
 			GPIOB->ODR |= (0x0001 << 4);
 			GPIOC->ODR = (0x0000 << 7);
 
+		//pin right
 		}else if (joystickState == 8){
 			GPIOA->ODR |= (0x0001 << 9);
 			GPIOB->ODR = (0x0000 << 4);
 			GPIOC->ODR = (0x0000 << 7);
 
+		//pin center
 		}else if (joystickState == 16){
 			GPIOA->ODR = (0x0000 << 9);
 			GPIOB->ODR = (0x0000 << 4);
