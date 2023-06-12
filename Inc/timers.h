@@ -11,7 +11,7 @@
 #include "stm32f30x_conf.h"
 
 typedef struct{
-	int32_t hours,minutes,seconds,miliseconds;
+	int16_t hours,minutes,seconds,miliseconds;
 } timeS_t;
 
 
@@ -19,8 +19,10 @@ typedef struct{
 void configTimer();
 void TIM1_BRK_TIM15_IRQHandler(void);
 void prntClk();
+int32_t returnSec();
+int32_t returnMilisec();
 
-timeS_t hejMorMor;
+timeS_t tid;
 
 
 #endif /* TIMERS_H_ */

@@ -36,7 +36,7 @@ void drawvert(uint8_t n);
 void drawhoriz(uint8_t n);
 void initColor();
 
-//p
+
 //window
 
 
