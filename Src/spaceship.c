@@ -6,11 +6,6 @@
  */
 
 #include "spaceship.h"
-#include "pins.h"
-#include "uart.h"
-#include <math.h>
-#include "vector.h"
-
 
 //initialize spaceship
 
@@ -86,7 +81,6 @@ void removeSpaceship(spaceship_t* spaceship){
 	gotoxy(spaceship->posX,spaceship->posY);
 	printf("%c", 32);
 }
-
 
 
 

@@ -1,22 +1,27 @@
+
 #include "stm32f30x_conf.h" // STM32 config
+#include "stdio.h"
+#include "stdint.h"
 #include "30010_io.h" // Input/output library for this course
 #include "ansi.h"
-#include "vector.h"
-#include "Balls.h"
+#include "lut.h"
 #include "pins.h"
+#include "vector.h"
+#include "balls.h"
+#include "window.h"
+#include "lcd.h"
+#include "charset.h"
 #include "timers.h"
-#include "uart.h"
 #include "spaceship.h"
+#include "uart.h"
 #include "bullet.h"
-
 
 
 int main(void)
 {
-	// Setup communication with the PC
 	uart_init(115200);
-	clrscr();
 
+/*
 	//kode til at lave window
 	clrscr();
 	bgcolor(0);
@@ -26,9 +31,6 @@ int main(void)
 	hideCursor();
 	initPins();
 	configTimer();
-
-
-
 
 	//initialize the ball start point and velocity
 	spaceship_t spaceship;
@@ -77,113 +79,108 @@ int main(void)
 
 		}
 		flagbullet=returnSec();
-
-
 	}
+*/
 
 
-	//removeBullet(&bullet);
+	//Exercise 6 - display on LCD screen
+	lcd_t llcd;
+	initlcd(&llcd);
+	lcd_write_text("Health: ***", 0);
+	lcd_write_text("Time: ", 1);
+	lcd_write_text("Score: ", 2);
 
-
-
-
-
-
-
-
-
-	/*
-	uart_clear();
-	while(1){
-
-		smthFunny1();
-
-	}
-	 */
-
-	/*
-	clrscr();
-	hideCursor();
+	//Exercice 6.2
 	initPins();
 	configTimer();
-	while(1){
+	while (1) {
 		prntClk();
+		lcd_update();
 	}
-	 */
 
-	/*
-	initPins();
-	while(1){
-		setLed();
-	}
-	 */
 
-	/*
-	//kode til at lave window
-	clrscr();
-	bgcolor(0);
-	fgcolor(15);
+	//Exercise 5 - timer
+/*	clrscr();
 	gotoxy(0,0);
+	initPins();
+	configTimer();
+	while (1) {
+		prntClk();
+		lcd_update();
+	}
+*/
+
+		//Current project. Starting window
+		//initWindow(0,0,90,90);
+		/*
+		 *
+		 * clrscr();
+		 * clrscr();color(15,0);
+		 */
+
+
+/*
+	//Opgave 3
+
 	window2(0, 0, 50, 50, 2);
 
-	//initialize the ball start point and velocity
-	ball_t ball;
-		initBalls(&ball);
-		ball.posX = 2;
-		ball.posY = 2;
-		ball.velX = 1;
-		ball.velY = 1;
-		ball.hit = 0;
-	while(1){
-			showBalls(&ball); //draw a ball
-		for(int i = 0; i < 250000; i++){
-			if(i==249999){
-				removeBall(&ball); //remove the old ball
-				updatePos(&ball); //update position of the ball
-				displayHit(&ball); //update hit counter and redraw small-window
+	//Initalize the ball start point and velocity
+	ball_t balls;
+	initBalls(&balls);
+	displayHit(&balls); //Update hit counter and redraw small-window
+	for(int i = 0; i <= 100; i++){
+		for(int j = 0; j <= 2500; j++){
+			if( j == 2499){
+				showBalls(&balls);
+				removeBall(&balls); 			//Remove the old ball
+				updatePos(&balls); 	//Update position of the ball
 
+			}
 		}
 	}
-}
-	 */
+*/
 
-	/*
+	//Opgave 2.2 - 2,3
+/*
+	gotoxy(15,5);
 	vector_t vec;
 	initVector(&vec);
-
-	vec.x = 1;
-	vec.y = 2;
-	int deg = 256;
-
+		vec.x = -4 << 14;
+		vec.y = -4 << 14;
+		int32_t deg = 1280;
+	printVector(vec);
 	rotateVector(&vec,deg);
-	printf("(%d,%d) \n", vec.x, vec.y);
-	 */
+	gotoxy(16,5);
+	printVector(vec);
 
-	//kode til at lave window
+*/
+
+	//printFix(expand(calcSin(126.482736)));
+
+
+	// Opgave 1
+	//	windows title behøver 15
+	//	window(25,0,41,20, "Windows 322", 1);
+	//	window(1, 0, 20, 20, "Window 3", 2);
+
+	//Opgave 2.1
 	/*
-	clrscr();
-	bgcolor(0);
-	fgcolor(15);
-	window(5,5,20,20,196);
-	 */
+	printFix(expand(calcSin((0))));
+	printf("\n");
+	printFix(expand(calcSin(64)));
+	printf("\n");
+	printFix(expand(calcSin(-111)));
+	printf("\n");
+	printFix(expand(calcSin(923)));
+	printf("\n");
+	printFix(expand(calcCos(0)));
+	printf("\n");
+	printFix(expand(calcCos(64)));
+	printf("\n");
+	printFix(expand(calcCos(-111)));
+	printf("\n");
+	printFix(expand(calcCos(923)));
+	printf("\n");*/
 
-
-	/*
-		printFix(expand(sinCalc(64)));
-		printf("\n");
-		printFix(expand(sinCalc(-111)));
-		printf("\n");
-		printFix(expand(cosCalc(-111)));
-		printf("\n");
-		printFix(expand(cosCalc(923)));
-		printf("\n");
-
-	 */
-	while (1) {}
+	while (1){}
 }
-
-
-
-
-
-
