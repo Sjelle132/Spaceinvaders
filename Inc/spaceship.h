@@ -9,6 +9,11 @@
 #define SPACESHIP_H_
 
 #include "stm32f30x_conf.h"
+#include "pins.h"
+#include "uart.h"
+#include <math.h>
+#include "vector.h"
+
 
 typedef struct {
 

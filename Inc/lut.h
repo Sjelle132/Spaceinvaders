@@ -5,8 +5,8 @@
 //
 // =====================================================================
 
-#ifndef LUT_H
-#define LUT_H
+#ifndef LUTSIN_H
+#define LUTSIN_H
 
 // === LUT SIZES ===
 #define SIN_SIZE 512
@@ -14,4 +14,5 @@
 // === LUT DECLARATIONS ===
 extern const signed short SIN[512];
 
-#endif	// LUT_H
+
+#endif	// LUTSIN_H
