@@ -33,7 +33,7 @@ int32_t keyboardController() {
         }else if(bogstav == 'd'){
         	directionsState = 8;
         }else if (bogstav == 'b'){
-        	directionsState = 100;
+        	directionsState = 64;
         }
 
     }
