@@ -9,14 +9,20 @@
 #define LCDFUNC_H_
 
 #include "charset.h"
-#include "lcd.h"
 #include "30010_io.h"
-
 #include "stm32f30x_conf.h" // STM32 config
 #include "stdio.h"
 #include "stdint.h"
+#include "string.h"
+#include "timers.h"
 
-void lcd_write_text(char TtD[], int line);
-void lcd_update(char TtD[], int line,int x);
+typedef struct{
+	int i, j;
+} lcd_t;
+
+void initlcd();
+void lcdWriteText(char TtD[], int line);
+void lcd_update(); //Isn't used
+void lcdTimeDisplay();
 
 #endif /* LCDFUNC_H_ */
