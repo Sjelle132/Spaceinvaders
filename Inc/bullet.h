@@ -12,6 +12,7 @@
 #include "stm32f30x_conf.h"
 #include "spaceship.h"
 
+
 typedef struct {
 
 	int16_t posX;
@@ -27,6 +28,7 @@ void createBullet(bullet_t* bullet);
 void updateBullet(bullet_t* bullet);
 void removeBullet(bullet_t* bullet);
 void spawnBullet(bullet_t* bullet);
+//void drawAllBullets(bullet_t* bullet,spaceship_t* spaceship);
 
 
 #endif /* BULLET_H_ */
