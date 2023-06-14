@@ -8,6 +8,8 @@
 #include "uart.h"
 #include "spaceship.h"
 #include "bullet.h"
+#include "enemies.h"
+#include "asteroids.h"
 
 
 
@@ -17,7 +19,7 @@ int main(void)
 	uart_init(115200);
 	clrscr();
 
-	//kode til at lave window
+	//init param and create window
 	clrscr();
 	bgcolor(0);
 	fgcolor(15);
@@ -28,61 +30,103 @@ int main(void)
 	configTimer();
 
 
+	//init enemies
+
+	enemies_t enemies[3];
+	initEnemies(enemies);
 
 
-	//initialize the ball start point and velocity
+	//init asteroids
+	/*asteroid_t asteroid;
+	initAsteroids(&asteroid);
+	int numAsteroids = 1;
+*/
+	//initialize the spaceship start point and velocity
 	spaceship_t spaceship;
 	initSpaceship(&spaceship);
-	spaceship.posX = 5;
-	spaceship.posY = 5;
-	spaceship.velX = 0;
-	spaceship.velY = 0;
-	spaceship.life = 3;
+
+	//initialize bullet array
 	bullet_t bullet[10];
-	//initBullet(&bullet,&spaceship);
+
+	//spawns bullet out of map
 	for(  int8_t i=0; i<10; i++)
 		spawnBullet(&bullet[i]);
+
+	//initialize flags for bullet and spaceship
 	int32_t flagbullet = 0;
 	int16_t flagspaceship = 0;
 	int8_t i = 0;
 	int32_t spawntime=0;
+	int16_t flagenemies = 0;
+
+	int flagTest = 0;
+
+	//main loop
 	while(1){
+
+
+
+
+		//reads keyboard input all the time
 		uint8_t directionState = keyboardController();
+
+		//drawAsteroid(&asteroid);
+
+		//spaceship create and position update
 		createSpaceship(&spaceship); //draw spaceship
-		if(!(returnMilisec() == flagspaceship)){
-			removeSpaceship(&spaceship); //remove the old spaceship
-			updateSpaceship(&spaceship); //update position of the spaceship
+		if(!(returnSec() == flagspaceship)){
+			if (directionState == 1 || directionState == 2 || directionState == 4 || directionState == 8){
+				removeSpaceship(&spaceship); //remove the old spaceship
+				updateSpaceship(&spaceship,directionState); //update position of the spaceship
+
+			}
 		}
 		flagspaceship=returnMilisec();
 
-		if(100 == directionState && !(spawntime ==returnSec())){
+
+
+		//creates 10 bullets
+		for (int j = 0; j < 10; j++)
+			createBullet(&bullet[j]);
+
+		//for each b click, move bullet to spaceship xy coordinates
+		if(64 == directionState && !(spawntime ==returnHNDR())){
 			removeBullet(&bullet[i]);
 			initBullet(&bullet[i],&spaceship);
 			if(i<10)
 				i++;
 			if(i>=10)
 				i=0;
-			spawntime=returnSec();
+			spawntime=returnHNDR();
 		}
 
-		for (int j = 0; j < 10; j++)
-			createBullet(&bullet[j]);
 
-		if (!(returnSec()%4 == flagbullet)){
+		//bullet run path and speed //also updates pos of bullet
+		if (!(returnHNDR() == flagbullet)){
 			bullet->true = 1;
 			for (int j = 0; j < 10; j++){
+
 				removeBullet(&bullet[j]);
 				updateBullet(&bullet[j]);
+
 			}
 
 		}
-		flagbullet=returnSec();
+		flagbullet=returnHNDR();
+
+		//enemies interaction
+
+
+		createEnemies(enemies,&flagenemies);
+
+			updateEnemies(enemies,&flagenemies,tid.flag);
+			removeEnemies(enemies,&flagenemies,tid.flag);
+
+
+
 
 
 	}
-
-
-	//removeBullet(&bullet);
 
 
 
