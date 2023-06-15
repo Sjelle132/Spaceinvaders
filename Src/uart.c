@@ -5,11 +5,7 @@
  *      Author: oscar
  */
 
-
 #include "uart.h"
-#include "30010_io.h"
-#include "string.h"
-
 
 int32_t keyboardController() {
     int8_t arrayBogstaver[256];
@@ -33,18 +29,16 @@ int32_t keyboardController() {
         }else if(bogstav == 'd'){
         	directionsState = 8;
         }else if (bogstav == 'b'){
-        	directionsState = 100;
+        	directionsState = 64;
         }
-
     }
-
     arrayBogstaver[255] = '\0';
     return directionsState;
 }
 
 
 
-/*
+
 void smthFunny1(){
 	int8_t arrayBogstaver[256];
 	int8_t *parray = arrayBogstaver;
@@ -68,7 +62,7 @@ void smthFunny1(){
 
 }
 
-*/
+
 
 /*
 uint8_t smthFunny(){

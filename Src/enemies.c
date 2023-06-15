@@ -6,11 +6,7 @@
  */
 
 #include "enemies.h"
-#include "pins.h"
-#include "uart.h"
-#include <math.h>
-#include "vector.h"
-#include "timers.h"
+
 
 #define EnemyCount 3
 
@@ -38,47 +34,34 @@ void initEliteEnemy(eliteEnemy_t* EliteEnemy) {
 
 
 //create or draw enemies as array
-void createEnemies(enemies_t enemies[], int8_t* f) {
-
-
+void createEnemies(enemies_t enemies[]) {
 	for (int i = 0; i < EnemyCount; i++){
 		if (enemies[i].life > 0){
 			gotoxy(enemies[i].posX,enemies[i].posY);
 			printf("%c", 219);
 		}
 	}
-
 }
 
 //update enemies position
-void updateEnemies(enemies_t enemies[],int8_t* f,int16_t flag){
+void updateEnemies(enemies_t enemies[]){
+	//styrer hastigheden af enemy ved det ekstra (ydre) for loop
 
-	//styre hastigheden af enemy ved det ekstra (ydre) for loop
+	for (int i = 0; i < EnemyCount; i++) {
+		enemies[i].posX -= 1;
 
-		//for (int i = 0; i < 200000; i++) {}
-if(flag){
-		for (int i = 0; i < EnemyCount; i++) {
-			enemies[i].posX -= 1;
-
-			//enemies[i].posX = enemies[i].posX + enemies[i].velX;
-			//enemies[i].posY = enemies[i].posY + enemies[i].velY;
-
-		}
-
+		//enemies[i].posX = enemies[i].posX + enemies[i].velX;
+		//enemies[i].posY = enemies[i].posY + enemies[i].velY;
 	}
-
-
 }
 
 //delete the prev enemies
-void removeEnemies(enemies_t enemies[],int8_t* f, int16_t flag){
-		//for (int i = 0; i < 199999; i++) {}
-	if(flag){
-		for (int i = 0; i < EnemyCount; i++){
-			if (enemies[i].life > 0){
-				gotoxy(enemies[i].posX+1,enemies[i].posY);
-				printf("%c", 32);
-			}
+void removeEnemies(enemies_t enemies[]){
+	//for (int i = 0; i < 199999; i++) {}
+	for (int i = 0; i < EnemyCount; i++){
+		if (enemies[i].life > 0){
+			gotoxy(enemies[i].posX+1,enemies[i].posY);
+			printf("%c", 32);
 		}
 	}
 }
@@ -130,4 +113,3 @@ switch(joystickState){
 
 
 }*/
-
