@@ -22,7 +22,7 @@ typedef struct {
 
 void initSpaceship(spaceship_t* spaceship);
 void createSpaceship(spaceship_t* spaceship);
-void updateSpaceship(spaceship_t* spaceship);
+void updateSpaceship(spaceship_t* spaceship, uint8_t joystickState);
 void removeSpaceship(spaceship_t* spaceship);
 
 

@@ -21,8 +21,7 @@ typedef struct{
 } lcd_t;
 
 void initlcd();
-void lcdWriteText(char TtD[], int line);
-void lcd_update(); //Isn't used
-void lcdTimeDisplay();
+void lcd_write_text(char TtD[], int line);
+void lcd_update();
 
 #endif /* LCDFUNC_H_ */
