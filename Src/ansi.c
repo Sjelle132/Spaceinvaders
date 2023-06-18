@@ -1,11 +1,10 @@
-/*
- * ansi.c
- *
- *  Created on: 1. jun. 2023
- *      Author: oscar
- */
+#define ESC 0x1B
 #include "ansi.h"
-#include "balls.h"
+#include "stdio.h"
+#include "stdint.h"
+#include "lut.h"
+#include "math.h"
+#define M_PI 3.14159265358979323846
 
 
 void fgcolor(uint8_t foreground) {
@@ -69,12 +68,12 @@ void clrscr(){
 	printf("%c[2J", ESC);
 }
 
-void hideCursor(){
-	printf("%c[?25l", ESC);
+void clreol(){
+	printf("%c[K", ESC);
 }
 
-void clreol(){
-	printf("%c[2K", ESC);
+void hideCursor(){
+	printf("%c[?25l", ESC);
 }
 
 void clrpkt(){
@@ -82,31 +81,122 @@ void clrpkt(){
 	printf("%c", 32);
 }
 
-void gotoxy(uint8_t r,uint8_t c){
-	printf("\033[%d;%dH", c,r);
+void gotoxy(uint8_t r, uint8_t c){
+	printf("\033[%d;%dH", c, r);
 }
 
 void underline(uint8_t on){
 	if (on){
-	printf("%c[4m", ESC);
-	} else {
-	printf("%c[24m", ESC);
-	}
+	print("%c[4m", ESC);
+	} else
+		print("%c[24m", ESC);
 }
 
 void blink(uint8_t on){
 	if (on){
-		printf("%c[5m", ESC);
-	}else{
-		printf("%c[25m", ESC);
-	}
+		print("%c[5m", ESC);
+		} else
+			print("%c[25m", ESC);
 }
 
 void inverse(uint8_t on){
 	if (on){
-		printf("%c[7m", ESC);
-	}else{
-		printf("%c[27m", ESC);
+		print("%c[7m", ESC);
+		} else
+			print("%c[27m", ESC);
+}
+
+void window(uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2, char s[], int style){
+
+	int i;
+	if(style == 1){
+
+		gotoxy(x1,y1);
+
+		printf("%c", 218);
+		for (i = 0; i < x2 - x1; i++){
+			printf("%c", 196);
+		}
+
+		printf("%c", 191);
+		printf("%c[1B", ESC);
+		printf("%c[1D", ESC);
+
+		for (i = 1 ; i < (y2 - y1); i++){
+			printf("%c", 179);
+			printf("%c[1B", ESC);
+			printf("%c[1D", ESC);
+		}
+
+		gotoxy(y1, x1);
+		printf("%c[1B", ESC);
+
+		for (i = 1 ; i < (y2 - y1) ; i++){
+			printf("%c", 179);
+			printf("%c[1B", ESC);
+			printf("%c[1D", ESC);
+		}
+
+		printf("%c", 192);
+
+		for (i = 0; i < x2 - x1; i ++){
+			printf("%c", 196);
+		}
+
+		printf("%c", 217);
+
+		gotoxy(y1, x1 + 1);
+
+		printf("%c", 180);
+		fgcolor(15);
+		bgcolor(0);
+		printf(s);
+		printf(" ");
+		printf("%c", 195);
+
+	} else if (style == 2){
+		gotoxy(y1,x1);
+
+		printf("%c", 201);
+		for (i = 0; i < x2 - x1; i++){
+			printf("%c", 205);
+		}
+
+		printf("%c", 187);
+		printf("%c[1B", ESC);
+		printf("%c[1D", ESC);
+
+		for (i = 1 ; i < (y2 - y1); i++){
+			printf("%c", 186);
+			printf("%c[1B", ESC);
+			printf("%c[1D", ESC);
+		}
+
+		gotoxy(y1, x1);
+		printf("%c[1B", ESC);
+
+		for (i = 1 ; i < (y2 - y1) ; i++){
+			printf("%c", 186);
+			printf("%c[1B", ESC);
+			printf("%c[1D", ESC);
+		}
+
+		printf("%c", 200);
+
+		for (i = 0; i < x2 - x1; i ++){
+			printf("%c", 205);
+		}
+
+		printf("%c", 188);
+
+		gotoxy(y1, x1 + 1);
+
+		printf("%c", 185);
+		fgcolor(15);
+		bgcolor(0);
+		printf(s);
+		printf(" ");
+		printf("%c", 204);
 	}
 }
 
@@ -116,7 +206,7 @@ void window2(uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2, int style){
 	int i;
 	if(style == 1){
 
-		gotoxy(x1,y1);
+		gotoxy(y1,x1);
 
 		printf("%c", 218);
 		for (i = 0; i < x2 - x1; i++){
@@ -186,42 +276,4 @@ void window2(uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2, int style){
 		printf("%c", 188);
 	}
 }
-
-
-void printFix(int32_t i) {
-// Prints a signed 16.16 fixed point number
-if ((i & 0x80000000) != 0) { // Handle negative numbers
-printf("-");
-i = ~i + 1;
-}
-printf("%ld.%04ld", i >> 16, 10000 * (uint32_t)(i & 0xFFFF) >> 16);
-// Print a maximum of 4 decimal digits to avoid overflow
-}
-
-int32_t expand(int32_t i) {
-// Converts an 18.14 fixed point number to 16.16
-return i << 2;
-}
-
-int32_t sinCalc(int32_t n){
-	if (n<0){
-		return SIN[-n & 0x1FF];
-	} else {
-		return SIN[n & 0x1FF];
-	}
-}
-
-int32_t cosCalc(int32_t n){
-		return SIN[-n + 128 & 0x1FF];
-}
-
-
-
-
-
-
-
-
-
-
 
