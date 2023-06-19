@@ -14,15 +14,13 @@ typedef struct {
 
 	int16_t posX;
 	int16_t posY;
-	int16_t velX;
-	int16_t velY;
 	int8_t life;
 
 } spaceship_t;
 
 void initSpaceship(spaceship_t* spaceship);
 void createSpaceship(spaceship_t* spaceship);
-void updateSpaceship(spaceship_t* spaceship);
+void updateSpaceship(spaceship_t* spaceship, uint8_t joystickState);
 void removeSpaceship(spaceship_t* spaceship);
 
 

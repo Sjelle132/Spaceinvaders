@@ -11,6 +11,9 @@
 
 #include "stm32f30x_conf.h"
 #include "spaceship.h"
+#include "asteroids.h"
+#include "enemies.h"
+
 
 typedef struct {
 
@@ -27,6 +30,11 @@ void createBullet(bullet_t* bullet);
 void updateBullet(bullet_t* bullet);
 void removeBullet(bullet_t* bullet);
 void spawnBullet(bullet_t* bullet);
+//void drawAllBullets(bullet_t* bullet,spaceship_t* spaceship);
+//void updateBullet(bullet_t* bullet, asteroid_t* asteroid, int numAsteroids);
+
+
+void interactionsPlayerBulletHitEnemy(enemies_t enemies[], bullet_t* bullet );
 
 
 #endif /* BULLET_H_ */
