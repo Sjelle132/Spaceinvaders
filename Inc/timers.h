@@ -23,6 +23,7 @@ extern volatile uint32_t elapsed_time;
 extern volatile uint32_t elapsed_time_enemy;
 extern volatile uint32_t elapsed_time_PlayerBullet;
 extern volatile uint32_t elapsed_time_Asteroid;
+extern volatile uint32_t elapsed_time_Boss;
 
 
 void configTimer();

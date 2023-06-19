@@ -10,7 +10,7 @@
 
 #include "stm32f30x_conf.h"
 #include "spaceship.h"
-#include "enemies.h"
+
 
 
 typedef struct {
@@ -30,13 +30,15 @@ typedef struct {
 } bossBullet_t;
 
 void initBoss(boss_t boss[]);
-void createBoss(boss_t boss[], enemies_t enemies[], int8_t f);
+void createBoss(boss_t boss[]);
 void updateBoss(boss_t boss[]);
+void removeBoss(boss_t boss[]);
 
 void updateBossShoot(bossBullet_t bossBullet[], boss_t boss[]);
 void bossShoot(bossBullet_t bossBullet[], boss_t boss[]);
 void initBossBullet(bossBullet_t bossBullet[], boss_t boss[]);
 void removeBossShoot(bossBullet_t bossBullet[]);
+void interactionsBossBulletHitPlayer(bossBullet_t bossBullet[], spaceship_t* spaceship);
 
 
 #endif /* BOSS_H_ */
