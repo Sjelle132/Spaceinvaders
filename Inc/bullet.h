@@ -13,6 +13,7 @@
 #include "spaceship.h"
 #include "asteroids.h"
 #include "enemies.h"
+#include "boss.h"
 
 
 typedef struct {
@@ -35,6 +36,6 @@ void spawnBullet(bullet_t* bullet);
 
 
 void interactionsPlayerBulletHitEnemy(enemies_t enemies[], bullet_t* bullet );
-
+void interactionsPlayerBulletHitBoss(boss_t boss[], bullet_t* bullet );
 
 #endif /* BULLET_H_ */
