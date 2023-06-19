@@ -223,4 +223,3 @@ void updateBullet(bullet_t* bullet, asteroid_t* asteroid, int numAsteroids) {
 
 
 
-
