@@ -23,7 +23,4 @@ void createSpaceship(spaceship_t* spaceship);
 void updateSpaceship(spaceship_t* spaceship, uint8_t joystickState);
 void removeSpaceship(spaceship_t* spaceship);
 
-
-
-
 #endif /* SPACESHIP_H_ */

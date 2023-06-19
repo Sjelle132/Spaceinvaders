@@ -10,7 +10,7 @@
 
 #include "stm32f30x_conf.h"
 #include "spaceship.h"
-
+#include "lcd.h"
 
 
 typedef struct {
@@ -46,7 +46,7 @@ void updateEnemyShoot(enemyBullet_t enemyBullet[], enemies_t[]);
 void removeEnemyShoot(enemyBullet_t enemyBullet[]);
 
 void interactionsEnemyBulletHitPlayer(enemyBullet_t enemyBullet[], spaceship_t* spaceship);
-int32_t isAllEnemyDead(enemies_t enemies[] ,spaceship_t spaceship);
+int8_t isAllEnemyDead(enemies_t enemies[] ,spaceship_t* spaceship);
 
 
 #endif /* ENEMIES_H_ */
