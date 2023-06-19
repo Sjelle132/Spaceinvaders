@@ -1,0 +1,134 @@
+#include "stm32f30x_conf.h" // STM32 config
+#include "30010_io.h" // Input/output library for this course
+#include "ansi.h"
+#include "Balls.h"
+#include "pins.h"
+#include "timers.h"
+#include "uart.h"
+#include "spaceship.h"
+#include "bullet.h"
+#include "asteroids.h"
+#include "powerup.h"
+
+int main(void)
+{
+	// Setup communication with the PC
+	uart_init(115200);
+	clrscr();
+
+	//init param and create window
+	clrscr();
+	bgcolor(0);
+	fgcolor(15);
+	gotoxy(0,0);
+	window2(0, 0, 150, 300, 2);
+	hideCursor();
+	initPins();
+	configTimer();
+
+
+	//init enemies
+	//enemies_t enemies[3];
+	//initEnemies(enemies);
+
+
+	//initialize the spaceship start point and velocity
+	spaceship_t spaceship;
+	initSpaceship(&spaceship);
+
+	//initialize bullet array
+	bullet_t bullet[20];
+
+	// initialize the asteroid
+	asteroid_t asteroid[5];
+	initAsteroids(asteroid);
+	int8_t numAsteroids = 5;
+
+
+	// initialize the powerup
+	powerup_t powerup;
+	initPowerup(&powerup);
+	drawPowerup(&powerup);
+
+
+	//spawns bullet out of map
+	for(  int8_t i=0; i<20; i++)
+		spawnBullet(&bullet[i]);
+
+	//initialize flags for bullet and spaceship
+	int32_t flagbullet = 0;
+	int16_t flagspaceship = 0;
+	int8_t i = 0;
+	int32_t spawntime=0;
+
+
+
+	//main loop
+	while(1){
+		//powerup.flag=0;
+		uint8_t tick1 = 0;
+		int16_t tick = returnMilisec();
+
+		drawAsteroid(asteroid);
+		removeAsteroid(asteroid);
+		collisionDetection(&powerup, &spaceship);
+		powerupSpell(&powerup, bullet);
+
+
+		if (tick == 500) {
+			//for (int i = 0; i < 10; i++){}
+			//if(tick == 501) {
+			tick1=1;
+			//}
+		}
+
+		//reads keyboard input all the time
+		uint8_t directionState = keyboardController();
+
+		//spaceship create and position update
+		createSpaceship(&spaceship); //draw spaceship
+		if(!(returnSec() == flagspaceship)){
+			if (directionState == 1 || directionState == 2 || directionState == 4 || directionState == 8){
+				removeSpaceship(&spaceship); //remove the old spaceship
+				updateSpaceship(&spaceship,directionState); //update position of the spaceship
+			}
+		}
+		flagspaceship=returnMilisec();
+
+
+
+		//creates 10 bullets
+		for (int j = 0; j < 10; j++) createBullet(&bullet[j]);
+
+		//for each b click, move bullet to spaceship xy coordinates
+		if(64 == directionState && !(spawntime ==returnHNDR())){
+			removeBullet(&bullet[i]);
+			initBullet(&bullet[i],&spaceship);
+			if(i<20)
+				i++;
+			if(i>=20)
+				i=0;
+			spawntime=returnHNDR();
+		}
+
+
+
+		//bullet run path and speed //also updates pos of bullet
+		if (!(returnHNDR() == flagbullet)){
+			bullet->true = 1;
+			for (int j = 0; j < 20; j++){
+				removeBullet(&bullet[j]);
+				updateBullet(&bullet[j]);
+				collisionDetectionA(asteroid, &bullet[j]);
+				applyGravity(asteroid, &bullet[j],numAsteroids);
+			}
+		}
+		flagbullet=returnHNDR();
+	}
+}
+
+
+
+
+
+
