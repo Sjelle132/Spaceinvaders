@@ -80,6 +80,15 @@ void interactionsPlayerBulletHitEnemy(enemies_t enemies[], bullet_t* bullet ){
 	}
 }
 
+void interactionsPlayerBulletHitBoss(boss_t boss[], bullet_t* bullet ){
+	for (int i = 0; i < 1; i++) { //5 skal ændres til enemy count, men det kan Liou måske gøre?
+		if (bullet->posX == boss[i].posX && bullet->posY == boss[i].posY && boss[i].life > 0) {
+			boss[i].life-- ;
+			break;
+		}
+
+	}
+}
 
 
 

@@ -6,21 +6,16 @@
  */
 
 #include "enemies.h"
-#include "pins.h"
-#include "uart.h"
-#include <math.h>
-#include "vector.h"
-#include "timers.h"
+
 
 
 #define EnemyCount 5
 
-//initialize 3 enemies
-
+//initialize 5 enemies
 void initEnemies(enemies_t enemies[]) {
 	for (int i = 0; i < EnemyCount; i++){
 		enemies[i].posX = 150;
-		enemies[i].posY = 7+i*8;//10*i+rand()%40;
+		enemies[i].posY = 7+i*8;
 		enemies[i].velX = 0;
 		enemies[i].velY = 0;
 		enemies[i].life = 2;
@@ -32,17 +27,13 @@ void initEnemies(enemies_t enemies[]) {
 
 //create or draw enemies as array
 void createEnemies(enemies_t enemies[]) {
-
-
 	for (int i = 0; i < EnemyCount; i++){
 		if (enemies[i].life > 0){
 			gotoxy(enemies[i].posX,enemies[i].posY);
-
 			fgcolor(2);
 			printf("%c", 219);
 		}
 	}
-
 }
 
 //update enemies position
@@ -50,35 +41,25 @@ void updateEnemies(enemies_t enemies[]){
 
 	for (int i = 0; i < EnemyCount; i++) {
 		if (enemies[i].posX >= 152 || enemies[i].posX <= 3) {
-
 			removeEnemies(enemies);
 			enemies[i].life = 0;
-
-
-
-			// i tilfælde af vi gerne vil have enemy til at spawne igen hvis de rammer væggen
-			/*enemies[i].posX = 150;
-			enemies[i].posY = 7+i*8;
-			 */
-
 		} else if (enemies[i].life > 0)  {
 			enemies[i].posX -= 1;
-
 			enemies[i].posX = enemies[i].posX + enemies[i].velX;
 			enemies[i].posY = enemies[i].posY + enemies[i].velY;
 		}
-
-
 	}
-
-
 }
 
 
 //adds all enemy lives, and when lives == 0, assumes state should go to next lvl.
-void isAllEnemyDead(enemies_t enemies[], int8_t f, spaceship_t spaceship){
+int32_t isAllEnemyDead(enemies_t enemies[] , spaceship_t spaceship){
+	 int8_t f = 0;
+
 	for (int i = 0; i < EnemyCount; i++) {
+
 		f += enemies[i].life;
+
 	}
 	for (int i = 0; i < EnemyCount; i++) {
 
@@ -90,13 +71,12 @@ void isAllEnemyDead(enemies_t enemies[], int8_t f, spaceship_t spaceship){
 		printf("Game over, you died because of enemy reach left side");
 	}
 	}
-	gotoxy(6,6);
-	printf("%02d", f);
+	return f;
+
 }
 
 
 void removeEnemies(enemies_t enemies[]){
-
 
 	for (int i = 0; i < EnemyCount; i++){
 		if (enemies[i].life > 0){
