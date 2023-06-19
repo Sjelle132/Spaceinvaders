@@ -10,6 +10,7 @@
 #include "uart.h"
 #include "enemies.h"
 
+
 void initBullet(bullet_t* bullet,spaceship_t* spaceship){
 	bullet->posX = spaceship->posX +2;
 	bullet->posY = spaceship->posY;
@@ -47,11 +48,10 @@ void updateBullet(bullet_t* bullet) {
 		removeBullet(bullet);
 		bullet->true = 0;
 	} else if(bullet->true && (bullet->posX >= 2 || bullet->posX <= 150)) {
-		bullet->posX += 1;
-		bullet->velX = 1;
 
-		bullet->posX = bullet->posX + bullet->velX;
-		bullet->posY = bullet->posY + bullet->velY;
+		bullet->posX += 1;
+
+
 	}
 
 	//bullet only shooting right
@@ -72,10 +72,9 @@ void removeBullet(bullet_t* bullet) {
 
 void interactionsPlayerBulletHitEnemy(enemies_t enemies[], bullet_t* bullet ){
 	for (int i = 0; i < 5; i++) { //5 skal ændres til enemy count, men det kan Liou måske gøre?
-		if (bullet->posX == enemies[i].posX && bullet->posY == enemies[i].posY) {
+		if (bullet->posX == enemies[i].posX && bullet->posY == enemies[i].posY && enemies[i].life > 0) {
 			enemies[i].life-- ;
-			gotoxy(20,13);
-			printf("%d\n", enemies[i].life);
+			break;
 		}
 
 	}

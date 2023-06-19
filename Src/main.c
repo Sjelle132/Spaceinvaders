@@ -18,6 +18,7 @@
 #include "bullet.h"
 //#include "gameState.h"
 #include "enemies.h"
+#include "boss.h"
 
 
 int main(void)
@@ -44,10 +45,12 @@ int main(void)
 
 
 	//init asteroids
-	/*	asteroid_t asteroid;
-	initAsteroids(&asteroid);
-	int numAsteroids = 1;
+	/*
+	asteroid_t asteroid[5];
+	initAsteroid(asteroid);
 	 */
+
+
 
 
 	//init enemy bullets
@@ -57,6 +60,17 @@ int main(void)
 	//initialize the spaceship start point and velocity
 	spaceship_t spaceship;
 	initSpaceship(&spaceship);
+
+	/*
+	//init boss
+	boss_t boss[1];
+	initBoss(boss);
+
+
+	//init boss bulets
+	bossBullet_t bossBullet[3];
+	initBossBullet(bossBullet, boss);
+	*/
 
 	//initialize bullet array
 	bullet_t bullet[10];
@@ -75,11 +89,15 @@ int main(void)
 
 	//main loop
 
+	//int smth
+	int8_t EnemyLivesCount = 0;
+
 	while(1){
 		//reads keyboard input all the time
 		uint8_t directionState = keyboardController();
 
 		//drawAsteroid(&asteroid);
+
 
 		//spaceship create and position update
 		createSpaceship(&spaceship); //draw spaceship
@@ -108,17 +126,18 @@ int main(void)
 			spawntime=returnHNDR();
 		}
 
-
-		//int secOne = returnHNDR();
-
-		if (!(returnHNDR() == flagbullet)){
+		if (elapsed_time_PlayerBullet >= 100 ){
+			elapsed_time_PlayerBullet = 0;
 			bullet->true = 1;
 			for (int j = 0; j < 10; j++){
 
 				removeBullet(&bullet[j]);
 				updateBullet(&bullet[j]);
+				interactionsPlayerBulletHitEnemy(enemies, &bullet[j]);
+
 
 			}
+
 		}
 		flagbullet=returnHNDR();
 
@@ -135,27 +154,52 @@ int main(void)
 		if (elapsed_time_enemy >= 200 ) {
 			elapsed_time_enemy = 0;
 			updateEnemies(enemies);
-
+			isAllEnemyDead(enemies,EnemyLivesCount,spaceship);
+			//updateBoss(boss);
 
 		}
 
 		createEnemies(enemies);
 		removeEnemies(enemies);
 
+	//	createBoss(boss, enemies, EnemyLivesCount);
+	//	removeBoss(boss, enemies, EnemyLivesCount);
+
+
+
+
 
 		if (elapsed_time >= 100 ) {
 			elapsed_time = 0;
 			updateEnemyShoot(enemyBullet,enemies);
 			interactionsEnemyBulletHitPlayer(enemyBullet, &spaceship);
+			//updateBossShoot(bossBullet, boss);
+
 
 		}
+
+		//bossShoot(bossBullet,boss);
+		//removeBossShoot(bossBullet);
+
+		/*if (elapsed_time_Asteroid >= 1000) {
+			elapsed_time_Asteroid = 0;
+			//removeAsteroid(asteroid);
+			//updateAsteroid(asteroid);
+
+		}*/
+
+		//drawAsteroid(asteroid);
 
 
 		enemyShoot(enemyBullet,enemies);
 		removeEnemyShoot(enemyBullet);
 
-		interactionsPlayerBulletHitEnemy(enemies, &bullet);
 
+
+		if (spaceship.life == 0){
+			gotoxy(20,5);
+			printf("Game is over, your spaceship died");
+		}
 
 	}
 
