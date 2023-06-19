@@ -14,5 +14,6 @@
 
 int32_t readJoystick();
 void initPins();
+void setLed();
 
 #endif /* PINS_H_ */

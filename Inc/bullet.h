@@ -11,7 +11,6 @@
 
 #include "stm32f30x_conf.h"
 #include "spaceship.h"
-#include "asteroids.h"
 #include "enemies.h"
 
 

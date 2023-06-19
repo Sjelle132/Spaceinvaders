@@ -11,6 +11,11 @@
 #include "30010_io.h"
 #include "string.h"
 
+
+
+void smthFunny1();
 int32_t keyboardController();
+
+
 
 #endif /* UART_H_ */
