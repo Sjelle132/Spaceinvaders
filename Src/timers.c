@@ -21,7 +21,7 @@ void configTimer(){
 	TIM15->ARR = 63000; // Set reload value (63000)
 	TIM15->PSC = 0; // Set prescale value
 	TIM15->DIER |= 0x0001; // Enable timer 15 interrupts
-	TIM15->CR1 = 1; // Configure timer 15
+	TIM15->CR1 = 0; // Configure timer 15
 
 	NVIC_SetPriority(TIM1_BRK_TIM15_IRQn, 0); // Set interrupt priority
 	NVIC_EnableIRQ(TIM1_BRK_TIM15_IRQn); // Enable interrupt

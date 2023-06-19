@@ -25,8 +25,6 @@ void spawnBullet(bullet_t* bullet){
 	bullet->velX = 0;
 	bullet->velY = 0;
 	bullet->true = 1;
-
-
 }
 
 void createBullet(bullet_t* bullet ){
@@ -35,12 +33,10 @@ void createBullet(bullet_t* bullet ){
 		//bullet->posX = spaceship->posX;
 		//bullet->posY = spaceship->posY;
 		printf("%c", 111);
-
 	}
 }
 
 void updateBullet(bullet_t* bullet) {
-
 	//directionState = keyboardController();
 	if (bullet->true && (bullet->posX >= 150 || bullet->posX <= 2)){
 		bullet->posX += 0;
@@ -48,10 +44,7 @@ void updateBullet(bullet_t* bullet) {
 		removeBullet(bullet);
 		bullet->true = 0;
 	} else if(bullet->true && (bullet->posX >= 2 || bullet->posX <= 150)) {
-
 		bullet->posX += 1;
-
-
 	}
 
 	//bullet only shooting right
@@ -71,13 +64,30 @@ void removeBullet(bullet_t* bullet) {
 // interactions
 
 void interactionsPlayerBulletHitEnemy(enemies_t enemies[], bullet_t* bullet ){
+
 	for (int i = 0; i < 5; i++) { //5 skal ændres til enemy count, men det kan Liou måske gøre?
 		if (bullet->posX == enemies[i].posX && bullet->posY == enemies[i].posY && enemies[i].life > 0) {
-			enemies[i].life-- ;
+			enemies[i].life--;
+			bullet->score++;
 			break;
 		}
-
 	}
+
+	int scoreOneOffset = 7;
+	int scoreTenOffset = 6;
+
+//	int scoreOne = bullet->score % 10;
+	int scoreTen = bullet->score / 10;
+
+	for(int j = 0; j < 5; j++){
+		buffer[j+(scoreOneOffset * 5)+(128 * 2)] = character_data[bullet->score + 16][j];
+	}
+	lcd_push_buffer(buffer);
+
+	for(int j = 0; j < 5; j++){
+		buffer[j+(scoreTenOffset * 5)+(128 * 2)] = character_data[scoreTen + 16][j];
+	}
+	lcd_push_buffer(buffer);
 }
 
 void interactionsPlayerBulletHitBoss(boss_t boss[], bullet_t* bullet ){
@@ -89,7 +99,6 @@ void interactionsPlayerBulletHitBoss(boss_t boss[], bullet_t* bullet ){
 
 	}
 }
-
 
 
 /*
@@ -127,7 +136,8 @@ void createBullet(bullet_t* bullet ){
 	}
 }
 
-/*void updateBullet(bullet_t* bullet) {
+
+void updateBullet(bullet_t* bullet) {
 
 	//directionState = keyboardController();
 	if (bullet->true && (bullet->posX >= 150 || bullet->posX <= 2)){

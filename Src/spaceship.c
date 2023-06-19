@@ -22,43 +22,37 @@ void initSpaceship(spaceship_t* spaceship) {
 
 //create spaceship
 void createSpaceship(spaceship_t* spaceship) {
+	//back of the spaceship (left side)
+	gotoxy(spaceship->posX,spaceship->posY);
+	printf("%c", 219);
+	gotoxy(spaceship->posX ,spaceship->posY + 1);
+	printf("%c", 219);
+	gotoxy(spaceship->posX ,spaceship->posY + 2);
+	printf("%c", 219);
+	gotoxy(spaceship->posX ,spaceship->posY - 1);
+	printf("%c", 219);
+	gotoxy(spaceship->posX ,spaceship->posY - 2 );
+	printf("%c", 219);
 
+	//middle section of the spaceship
+	gotoxy(spaceship->posX +1 ,spaceship->posY - 1 );
+	printf("%c", 219);
+	gotoxy(spaceship->posX +1 ,spaceship->posY  );
+	printf("%c", 219);
+	gotoxy(spaceship->posX +1 ,spaceship->posY + 1 );
+	printf("%c", 219);
 
-		//back of the spaceship (left side)
-		gotoxy(spaceship->posX,spaceship->posY);
-		printf("%c", 219);
-		gotoxy(spaceship->posX ,spaceship->posY + 1);
-		printf("%c", 219);
-		gotoxy(spaceship->posX ,spaceship->posY + 2);
-		printf("%c", 219);
-		gotoxy(spaceship->posX ,spaceship->posY - 1);
-		printf("%c", 219);
-		gotoxy(spaceship->posX ,spaceship->posY - 2 );
-		printf("%c", 219);
-
-
-		//middle section of the spaceship
-		gotoxy(spaceship->posX +1 ,spaceship->posY - 1 );
-		printf("%c", 219);
-		gotoxy(spaceship->posX +1 ,spaceship->posY  );
-		printf("%c", 219);
-		gotoxy(spaceship->posX +1 ,spaceship->posY + 1 );
-		printf("%c", 219);
-
-
-		//front tip of the spaceship
-		gotoxy(spaceship->posX +2 ,spaceship->posY);
-		printf("%c", 219);
+	//front tip of the spaceship
+	gotoxy(spaceship->posX +2 ,spaceship->posY);
+	printf("%c", 219);
 
 }
 
 //update spaceship position
 void updateSpaceship(spaceship_t* spaceship, uint8_t joystickState){
-
 	//if no input, spaceship position stays the same
 	spaceship->posX = spaceship->posX;
 	spaceship->posY = spaceship->posY;
-
 
 	//If space ship is alive, movement/steering is allowed
 	if (spaceship->life > 0 ) {
@@ -79,41 +73,30 @@ void removeSpaceship(spaceship_t* spaceship){
 
 	//uint8_t joystickState = keyboardController();
 
+	gotoxy(spaceship->posX,spaceship->posY);
+	printf("%c", 32);
+	gotoxy(spaceship->posX ,spaceship->posY + 1);
+	printf("%c", 32);
+	gotoxy(spaceship->posX ,spaceship->posY + 2);
+	printf("%c", 32);
+	gotoxy(spaceship->posX ,spaceship->posY - 1);
+	printf("%c", 32);
+	gotoxy(spaceship->posX ,spaceship->posY - 2 );
+	printf("%c", 32);
 
-			gotoxy(spaceship->posX,spaceship->posY);
-			printf("%c", 32);
-			gotoxy(spaceship->posX ,spaceship->posY + 1);
-			printf("%c", 32);
-			gotoxy(spaceship->posX ,spaceship->posY + 2);
-			printf("%c", 32);
-			gotoxy(spaceship->posX ,spaceship->posY - 1);
-			printf("%c", 32);
-			gotoxy(spaceship->posX ,spaceship->posY - 2 );
-			printf("%c", 32);
+	gotoxy(spaceship->posX +1 ,spaceship->posY - 1 );
+	printf("%c", 32);
+	gotoxy(spaceship->posX +1 ,spaceship->posY  );
+	printf("%c", 32);
+	gotoxy(spaceship->posX +1 ,spaceship->posY + 1 );
+	printf("%c", 32);
 
-			gotoxy(spaceship->posX +1 ,spaceship->posY - 1 );
-			printf("%c", 32);
-			gotoxy(spaceship->posX +1 ,spaceship->posY  );
-			printf("%c", 32);
-			gotoxy(spaceship->posX +1 ,spaceship->posY + 1 );
-			printf("%c", 32);
-
-			gotoxy(spaceship->posX +2 ,spaceship->posY);
-			printf("%c", 32);
-
+	gotoxy(spaceship->posX +2 ,spaceship->posY);
+	printf("%c", 32);
 
 	//gotoxy(spaceship->posX,spaceship->posY);
 	//printf("%c", 32);
 }
-
-
-
-
-
-
-
-
-
 
 /*
 
@@ -152,10 +135,5 @@ switch(joystickState){
 		spaceship->posY = spaceship->posY;
 		spaceship->velX = 0;
 		spaceship->velY = 0;
-
-
 	}
-
-
 }*/
-

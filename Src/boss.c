@@ -21,48 +21,14 @@ void initBoss(boss_t boss[]){
 
 
 void createBoss(boss_t boss[]) {
-
 	for (int i = 0; i < 1; i++) {
 		if (boss[i].life > 0)  {
 			gotoxy(boss[i].posX,boss[i].posY);
 			fgcolor(1);
 			printf("%c", 219);
-
-			/*gotoxy(boss->posX+1,boss->posY);
-			printf("%c", 219);
-
-
-			gotoxy(boss->posX+1,boss->posY-1);
-			printf("%c", 219);
-
-			gotoxy(boss->posX,boss->posY-1);
-			printf("%c", 219);
-
-			gotoxy(boss->posX-1,boss->posY-1);
-			printf("%c", 219);
-
-			gotoxy(boss->posX-1,boss->posY);
-			printf("%c", 219);
-
-			gotoxy(boss->posX-1,boss->posY+1);
-			printf("%c", 219);
-
-			gotoxy(boss->posX,boss->posY+1);
-			printf("%c", 219);
-
-			gotoxy(boss->posX+1,boss->posY+1);
-			printf("%c", 219);
-
-			 */
-
-
 		}
-
-
 	}
 }
-
-
 
 void updateBoss(boss_t boss[]) {
 	for (int i = 0; i < 1; i++) {
@@ -157,7 +123,6 @@ void bossShoot(bossBullet_t bossBullet[], boss_t* boss){
 }
 
 void updateBossShoot(bossBullet_t bossBullet[], boss_t* boss){
-
 	for (int i = 0; i < 1; i++) {
 		if ((bossBullet[i].posY >= 45 || bossBullet[i].posX <= 3 || bossBullet[i].posY <= 3 )){
 			removeBossShoot(bossBullet);
@@ -203,7 +168,6 @@ void interactionsBossBulletHitPlayer(bossBullet_t bossBullet[], spaceship_t* spa
 		}
 	}
 }
-
 
 
 
