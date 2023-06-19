@@ -24,7 +24,7 @@
 int main(void)
 {
 	// Setup communication with the PC
-	uart_init(115200);
+	uart_init(1048576);
 	clrscr();
 
 	//init param and create window
@@ -61,16 +61,16 @@ int main(void)
 	spaceship_t spaceship;
 	initSpaceship(&spaceship);
 
-	/*
+
 	//init boss
 	boss_t boss[1];
 	initBoss(boss);
 
 
 	//init boss bulets
-	bossBullet_t bossBullet[3];
+	bossBullet_t bossBullet[1];
 	initBossBullet(bossBullet, boss);
-	*/
+
 
 	//initialize bullet array
 	bullet_t bullet[10];
@@ -90,14 +90,14 @@ int main(void)
 	//main loop
 
 	//int smth
-	int8_t EnemyLivesCount = 0;
+
 
 	while(1){
 		//reads keyboard input all the time
 		uint8_t directionState = keyboardController();
 
+		int8_t EnemyLivesCount = isAllEnemyDead(enemies,spaceship);
 		//drawAsteroid(&asteroid);
-
 
 		//spaceship create and position update
 		createSpaceship(&spaceship); //draw spaceship
@@ -134,6 +134,7 @@ int main(void)
 				removeBullet(&bullet[j]);
 				updateBullet(&bullet[j]);
 				interactionsPlayerBulletHitEnemy(enemies, &bullet[j]);
+				interactionsPlayerBulletHitBoss(boss, &bullet[j] );
 
 
 			}
@@ -154,32 +155,40 @@ int main(void)
 		if (elapsed_time_enemy >= 200 ) {
 			elapsed_time_enemy = 0;
 			updateEnemies(enemies);
-			isAllEnemyDead(enemies,EnemyLivesCount,spaceship);
-			//updateBoss(boss);
+			updateBoss(boss);
+
+
 
 		}
 
 		createEnemies(enemies);
 		removeEnemies(enemies);
 
-	//	createBoss(boss, enemies, EnemyLivesCount);
-	//	removeBoss(boss, enemies, EnemyLivesCount);
+		if (EnemyLivesCount == 0) {
+			createBoss(boss);
+			removeBoss(boss);
 
+			if (elapsed_time_Boss >= 20) {
+				elapsed_time_Boss = 0;
+				updateBossShoot(bossBullet, boss);
+				interactionsBossBulletHitPlayer(bossBullet, &spaceship);
+			}
 
-
-
+			bossShoot(bossBullet,boss);
+			removeBossShoot(bossBullet);
+		}
 
 		if (elapsed_time >= 100 ) {
 			elapsed_time = 0;
 			updateEnemyShoot(enemyBullet,enemies);
 			interactionsEnemyBulletHitPlayer(enemyBullet, &spaceship);
-			//updateBossShoot(bossBullet, boss);
+
+
 
 
 		}
 
-		//bossShoot(bossBullet,boss);
-		//removeBossShoot(bossBullet);
+
 
 		/*if (elapsed_time_Asteroid >= 1000) {
 			elapsed_time_Asteroid = 0;

@@ -7,20 +7,24 @@
 
 #include "boss.h"
 
-#define EnemyCount 5
-#define BossBulletCount 3
 
-void initBoss(boss_t* boss){
-	boss->posX = 150;
-	boss->posY = 25;
-	boss->life = 10;
+#define EnemyCount 5
+//#define BossBulletCount 1
+
+void initBoss(boss_t boss[]){
+	for (int i = 0; i < 1; i++) {
+		boss[i].posX = 150;
+		boss[i].posY = 25;
+		boss[i].life = 10;
+	}
 }
 
 
-void createBoss(boss_t* boss, enemies_t enemies[], int8_t f) {
+void createBoss(boss_t boss[]) {
 
-		if (boss->life > 0)  {
-			gotoxy(boss->posX,boss->posY);
+	for (int i = 0; i < 1; i++) {
+		if (boss[i].life > 0)  {
+			gotoxy(boss[i].posX,boss[i].posY);
 			fgcolor(1);
 			printf("%c", 219);
 
@@ -49,10 +53,10 @@ void createBoss(boss_t* boss, enemies_t enemies[], int8_t f) {
 			gotoxy(boss->posX+1,boss->posY+1);
 			printf("%c", 219);
 
-*/
+			 */
 
 
-
+		}
 
 
 	}
@@ -60,33 +64,29 @@ void createBoss(boss_t* boss, enemies_t enemies[], int8_t f) {
 
 
 
-void updateBoss(boss_t* boss) {
-
-
-		if (boss->posX >= 152 || boss->posX <= 3) {
-
+void updateBoss(boss_t boss[]) {
+	for (int i = 0; i < 1; i++) {
+		if (boss[i].posX >= 152 || boss[i].posX <= 3) {
 			removeBoss(boss);
-			boss->life = 0;
+			boss[i].life = 0;
+		} else if (boss[i].life > 0 )  {
+			boss[i].posX -= 1;
 
-		} else if (boss->life > 0)  {
-			boss->posX -= 1;
-
-
+			boss[i].posX = boss[i].posX;
+			boss[i].posY = boss[i].posY;
 		}
-
-
-
+	}
 }
 
 
-void removeBoss(boss_t* boss, enemies_t enemies[], int8_t f) {
+void removeBoss(boss_t boss[]) {
 
-	for (int i = 0; i < 5; i++){}
-		if (boss->life > 0) {
-			gotoxy(boss->posX,boss->posY);
+	for (int i = 0; i < 1; i++){
+		if (boss[i].life > 0) {
+			gotoxy(boss[i].posX+1,boss[i].posY);
 			printf("%c", 32);
 
-		/*	gotoxy(boss->posX+1,boss->posY);
+			/*	gotoxy(boss->posX+1,boss->posY);
 			printf("%c", 32);
 
 
@@ -111,24 +111,27 @@ void removeBoss(boss_t* boss, enemies_t enemies[], int8_t f) {
 			gotoxy(boss->posX+1,boss->posY+1);
 			printf("%c", 32);
 
-*/
+			 */
 
 
 
 		}
+	}
 
 
 }
 
+
+
 void initBossBullet(bossBullet_t bossBullet[], boss_t* boss) {
 
-	for (int i = 0; i < BossBulletCount; i++){
-			if (boss->life > 0) {
-				bossBullet[i].posX = boss->posX;
-				bossBullet[i].posY = boss->posY;
-				bossBullet[i].true = 1;
-			}
+	for (int i = 0; i < 1; i++){
+		if (boss[i].life > 0) {
+			bossBullet[i].posX = boss[i].posX;
+			bossBullet[i].posY = boss[i].posY;
+			bossBullet[i].true = 1;
 		}
+	}
 
 
 }
@@ -136,14 +139,14 @@ void initBossBullet(bossBullet_t bossBullet[], boss_t* boss) {
 void bossShoot(bossBullet_t bossBullet[], boss_t* boss){
 
 
-	for (int i = 0; i<BossBulletCount;i++){
+	for (int i = 0; i<1;i++){
 		if (bossBullet[i].true){
 
-			gotoxy(bossBullet[i].posX,bossBullet[i].posY);
+			gotoxy(bossBullet[i].posX-1,bossBullet[i].posY);
 			printf("%c", 111);
-		} else if (!bossBullet[i].true && boss->life > 0) {
-			bossBullet[i].posX = boss->posX;
-			bossBullet[i].posY = boss->posY;
+		} else if (!bossBullet[i].true && boss[i].life > 0) {
+			bossBullet[i].posX = boss[i].posX;
+			bossBullet[i].posY = boss[i].posY;
 			bossBullet[i].true = 1;
 
 		}
@@ -155,42 +158,20 @@ void bossShoot(bossBullet_t bossBullet[], boss_t* boss){
 
 void updateBossShoot(bossBullet_t bossBullet[], boss_t* boss){
 
-	for (int i = 0; i < BossBulletCount; i++) {
-		if ((bossBullet[0].posY >= 45 || bossBullet[0].posX <= 3 || bossBullet[0].posY <= 3 )){
-			//removeBossShoot(bossBullet);
-			bossBullet[0].true = 0;
-		}else if ((bossBullet[0].posY >= 3 || bossBullet[0].posX <= 45 || bossBullet[0].posY >= 3 )) {
-			bossBullet[0].posX -= 1;
-
+	for (int i = 0; i < 1; i++) {
+		if ((bossBullet[i].posY >= 45 || bossBullet[i].posX <= 3 || bossBullet[i].posY <= 3 )){
+			removeBossShoot(bossBullet);
+			bossBullet[i].true = 0;
+		}else if ((bossBullet[i].posY >= 3 || bossBullet[i].posX <= 45 || bossBullet[i].posY >= 3 )) {
+			bossBullet[i].posX -= 1;
 		}
-/*
-		if ((bossBullet[1].posY >= 45 || bossBullet[1].posX <= 3 || bossBullet[1].posY <= 3 )){
-					//removeBossShoot(bossBullet);
-					bossBullet[1].true = 0;
-				}else {
-					bossBullet[1].posX -= 1;
-					bossBullet[1].posY += 1;
-
-				}
-		if ((bossBullet[2].posY <= 45 || bossBullet[2].posX <= 3 || bossBullet[2].posY <= 3 )){
-					//removeBossShoot(bossBullet);
-					bossBullet[2].true = 0;
-				}else {
-					bossBullet[2].posX -= 1;
-					bossBullet[2].posY -= 1;
-
-
-				}
-
-
-	}*/
-}
+	}
 }
 
 void removeBossShoot(bossBullet_t bossBullet[]){
 
 
-	for (int i = 0; i < BossBulletCount; i++) {
+	for (int i = 0; i < 1; i++) {
 		if (bossBullet[i].true){
 			gotoxy(bossBullet[i].posX,bossBullet[i].posY);
 			printf("%c", 32);
@@ -198,15 +179,30 @@ void removeBossShoot(bossBullet_t bossBullet[]){
 		} else if (!bossBullet[i].true){
 			gotoxy(bossBullet[i].posX-1,bossBullet[i].posY);
 			printf("%c", 32);
-
-
 		}
-
-
 	}
 }
 
+void interactionsBossBulletHitPlayer(bossBullet_t bossBullet[], spaceship_t* spaceship){
+	for (int i = 0; i < 1; i++) {
+		if (
+				//front right of the spaceship for the entire object defined
+				(bossBullet[i].posX == spaceship->posX && bossBullet[i].posY == spaceship->posY+2) ||
+				(bossBullet[i].posX == spaceship->posX && bossBullet[i].posY == spaceship->posY-2) ||
+				(bossBullet[i].posX == spaceship->posX+1 && bossBullet[i].posY == spaceship->posY-1) ||
+				(bossBullet[i].posX == spaceship->posX+1 && bossBullet[i].posY == spaceship->posY+1) ||
+				(bossBullet[i].posX == spaceship->posX+2 && bossBullet[i].posY == spaceship->posY)
+		) {
 
+			//if enemyBullet hits -> spaceship life goes -1
+			spaceship->life = 0;
+			gotoxy(20,10);
+			printf("%d", spaceship->life);
+			break;
+
+		}
+	}
+}
 
 
 

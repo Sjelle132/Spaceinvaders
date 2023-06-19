@@ -11,6 +11,7 @@ volatile uint32_t elapsed_time = 0;
 volatile uint32_t elapsed_time_enemy = 0;
 volatile uint32_t elapsed_time_PlayerBullet = 0;
 volatile uint32_t elapsed_time_Asteroid = 0;
+volatile uint32_t elapsed_time_Boss = 0;
 
 timeS_t tid = {0,0,0,0,0,0};
 
@@ -56,6 +57,7 @@ void TIM1_BRK_TIM15_IRQHandler(void) {
 	elapsed_time_enemy++;
 	elapsed_time_PlayerBullet++;
 	elapsed_time_Asteroid++;
+	elapsed_time_Boss++;
 
 	//set flag high for lcdTimeDisplay under lcd.c
 	tid.flag = 1;
