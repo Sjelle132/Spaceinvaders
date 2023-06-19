@@ -1,5 +1,5 @@
 
-//#include <states.h>
+#include <states.h>
 #include "stm32f30x_conf.h" // STM32 config
 #include "stdio.h"
 #include "stdint.h"
@@ -16,42 +16,25 @@
 #include "spaceship.h"
 #include "uart.h"
 #include "bullet.h"
-//#include "gameState.h"
+#include "gameState.h"
 #include "enemies.h"
-#include "boss.h"
 
 
 int main(void)
 {
 	// Setup communication with the PC
 	uart_init(115200);
-	clrscr();
 
-	//init param and create window
-	clrscr();
-	bgcolor(0);
-	fgcolor(15);
-	gotoxy(0,0);
-	windowFrame(0, 0, 150, 300, 2);
-	hideCursor();
+	//initializing parameters and create windows
+	initWindow();
 	initPins();
 	configTimer();
+	windowStart();
+	uint8_t currentState = StartMenu;
 
-
-	//Initialize enemies
-
+	//initialize enemies
 	enemies_t enemies[5];
 	initEnemies(enemies);
-
-
-	//init asteroids
-	/*
-	asteroid_t asteroid[5];
-	initAsteroid(asteroid);
-	 */
-
-
-
 
 	//init enemy bullets
 	enemyBullet_t enemyBullet[5];
@@ -60,17 +43,6 @@ int main(void)
 	//initialize the spaceship start point and velocity
 	spaceship_t spaceship;
 	initSpaceship(&spaceship);
-
-	/*
-	//init boss
-	boss_t boss[1];
-	initBoss(boss);
-
-
-	//init boss bulets
-	bossBullet_t bossBullet[3];
-	initBossBullet(bossBullet, boss);
-	*/
 
 	//initialize bullet array
 	bullet_t bullet[10];
@@ -85,144 +57,96 @@ int main(void)
 	int16_t flagspaceship = 0;
 	int8_t i = 0;
 	int32_t spawntime = 0;
-	//int16_t flagenemies = 1;
-
-	//main loop
-
-	//int smth
 	int8_t EnemyLivesCount = 0;
 
+	//main loop
 	while(1){
-		//reads keyboard input all the time
-		uint8_t directionState = keyboardController();
+		//reading states
+		if(stateReader == 1 && stateStartGame == 0){
+			uint8_t inputKB = uart_get_char();
+			uint8_t newState = processInput(currentState, inputKB, &spaceship);
 
-		//drawAsteroid(&asteroid);
-
-
-		//spaceship create and position update
-		createSpaceship(&spaceship); //draw spaceship
-		if(!(returnSec() == flagspaceship)){
-			if ((directionState == 1 || directionState == 2 || directionState == 4 || directionState == 8 )&& spaceship.life > 0){
-				removeSpaceship(&spaceship); //remove the old spaceship
-				updateSpaceship(&spaceship,directionState); //update position of the spaceship
-
+			if (newState != currentState){
+				stateUpdate(newState);
+				currentState = newState;
 			}
 		}
-		flagspaceship=returnMilisec();
+		else if(stateStartGame == 1 && stateReader == 0){
+			//reads keyboard input all the time
+			uint8_t directionState = keyboardController();
 
-		//creates 10 bullets
-		for (int j = 0; j < 10; j++){
-			createBullet(&bullet[j]);
-		}
+			//spaceship create and position update
+			createSpaceship(&spaceship); //draw spaceship
+			if(!(returnSec() == flagspaceship)){
+				if (directionState == 1 || directionState == 2 || directionState == 4 || directionState == 8){
+					removeSpaceship(&spaceship); //remove the old spaceship
+					updateSpaceship(&spaceship,directionState); //update position of the spaceship
+				}
+			}
+			flagspaceship=returnMilisec();
 
-		//for each b click, move bullet to spaceship xy coordinates
-		if(64 == directionState && !(spawntime ==returnHNDR())){
-			removeBullet(&bullet[i]);
-			initBullet(&bullet[i],&spaceship);
-			if(i<10)
-				i++;
-			if(i>=10)
-				i=0;
-			spawntime=returnHNDR();
-		}
-
-		if (elapsed_time_PlayerBullet >= 100 ){
-			elapsed_time_PlayerBullet = 0;
-			bullet->true = 1;
+			//creates 10 bullets
 			for (int j = 0; j < 10; j++){
-
-				removeBullet(&bullet[j]);
-				updateBullet(&bullet[j]);
-				interactionsPlayerBulletHitEnemy(enemies, &bullet[j]);
-
-
+				createBullet(&bullet[j]);
 			}
 
-		}
-		flagbullet=returnHNDR();
-
-
-
-
-		/*
-		 * Regel:
-		 * For det gældende object der trackes og mister liv, skal interactionen ligge i tilhørende elapsed time
-		 * Altså når vi tracker om enemies bliver ramt, ligger dens interaction i elapsed_time_enemy
-		 * Dermed opdateres tracking af om bullets rammer synkront med opdatering af enemies.
-		 *
-		 */
-		if (elapsed_time_enemy >= 200 ) {
-			elapsed_time_enemy = 0;
-			updateEnemies(enemies);
-			isAllEnemyDead(enemies,EnemyLivesCount,spaceship);
-			//updateBoss(boss);
-
-		}
-
-		createEnemies(enemies);
-		removeEnemies(enemies);
-
-	//	createBoss(boss, enemies, EnemyLivesCount);
-	//	removeBoss(boss, enemies, EnemyLivesCount);
-
-
-
-
-
-		if (elapsed_time >= 100 ) {
-			elapsed_time = 0;
-			updateEnemyShoot(enemyBullet,enemies);
-			interactionsEnemyBulletHitPlayer(enemyBullet, &spaceship);
-			//updateBossShoot(bossBullet, boss);
-
-
-		}
-
-		//bossShoot(bossBullet,boss);
-		//removeBossShoot(bossBullet);
-
-		/*if (elapsed_time_Asteroid >= 1000) {
-			elapsed_time_Asteroid = 0;
-			//removeAsteroid(asteroid);
-			//updateAsteroid(asteroid);
-
-		}*/
-
-		//drawAsteroid(asteroid);
-
-
-		enemyShoot(enemyBullet,enemies);
-		removeEnemyShoot(enemyBullet);
-
-
-
-		if (spaceship.life == 0){
-			gotoxy(20,5);
-			printf("Game is over, your spaceship died");
-		}
-
-	}
-
-
-	/*
-		//bullet run path and speed //also updates pos of bullet
-		if (!(returnHNDR() == flagbullet)){
-			bullet->true = 1;
-			for (int j = 0; j < 10; j++){
-
-				removeBullet(&bullet[j]);
-				updateBullet(&bullet[j]);
+			//for each b click, move bullet to spaceship xy coordinates
+			if(64 == directionState && !(spawntime ==returnHNDR())){
+				removeBullet(&bullet[i]);
+				initBullet(&bullet[i],&spaceship);
+				if(i<10)
+					i++;
+				if(i>=10)
+					i=0;
+				spawntime=returnHNDR();
 			}
-		}
-		flagbullet=returnHNDR();
 
-		//enemies interaction
+			if (elapsed_time_PlayerBullet >= 100 ){
+				elapsed_time_PlayerBullet = 0;
+				bullet->true = 1;
+				for (int j = 0; j < 10; j++){
 
-		if (tid.flagEnemies >= 2){
-			updateEnemies(enemies);
+					removeBullet(&bullet[j]);
+					updateBullet(&bullet[j]);
+					interactionsPlayerBulletHitEnemy(enemies, &bullet[j]);
+
+
+				}
+
+			}
+			flagbullet=returnHNDR();
+
+
+			/*
+			 * Regel:
+			 * For det gældende object der trackes og mister liv, skal interactionen ligge i tilhørende elapsed time
+			 * Altså når vi tracker om enemies bliver ramt, ligger dens interaction i elapsed_time_enemy
+			 * Dermed opdateres tracking af om bullets rammer synkront med opdatering af enemies.
+			 *
+			 */
+			//Updating enemies
+			if (elapsed_time >= 200 ) {
+				elapsed_time = 0;
+				updateEnemies(enemies);
+				isAllEnemyDead(enemies,EnemyLivesCount,spaceship);
+			}
 			createEnemies(enemies);
 			removeEnemies(enemies);
-		}*/
+
+			if (elapsed_time >= 100 ) {
+				elapsed_time = 0;
+				updateEnemyShoot(enemyBullet,enemies);
+				interactionsEnemyBulletHitPlayer(enemyBullet, &spaceship);
+			}
+			enemyShoot(enemyBullet,enemies);
+			removeEnemyShoot(enemyBullet);
+
+			if (spaceship.life == 0){
+				stateGameOver();
+			}
+		}
+	}
+
 	/*
 
 	clrscr();
@@ -368,66 +292,6 @@ int main(void)
 	}
 	 */
 
-	/*
-	//kode til at leave window
-	clrscr();
-	bgcolor(0);
-	fgcolor(15);
-	gotoxy(0,0);
-	window2(0, 0, 150, 300, 2);
-	hideCursor();
-	initPins();
-	configTimer();
-
-	//initialize the ball start point and velocity
-	spaceship_t spaceship;
-	initSpaceship(&spaceship);
-	spaceship.posX = 5;
-	spaceship.posY = 5;
-	spaceship.velX = 0;
-	spaceship.velY = 0;
-	spaceship.life = 3;
-	bullet_t bullet[10];
-	//initBullet(&bullet,&spaceship);
-	for(  int8_t i=0; i<10; i++)
-		spawnBullet(&bullet[i]);
-	int32_t flagbullet = 0;
-	int16_t flagspaceship = 0;
-	int8_t i = 0;
-	int32_t spawntime=0;
-	while(1){
-		uint8_t directionState = keyboardController();
-		createSpaceship(&spaceship); //draw spaceship
-		if(!(returnMilisec() == flagspaceship)){
-			removeSpaceship(&spaceship); //remove the old spaceship
-			updateSpaceship(&spaceship); //update position of the spaceship
-		}
-		flagspaceship=returnMilisec();
-
-		if(100 == directionState && !(spawntime ==returnSec())){
-			removeBullet(&bullet[i]);
-			initBullet(&bullet[i],&spaceship);
-			if(i<10)
-				i++;
-			if(i>=10)
-				i=0;
-			spawntime=returnSec();
-		}
-
-		for (int j = 0; j < 10; j++)
-			createBullet(&bullet[j]);
-
-		if (!(returnSec()%4 == flagbullet)){
-			bullet->true = 1;
-			for (int j = 0; j < 10; j++){
-				removeBullet(&bullet[j]);
-				updateBullet(&bullet[j]);
-			}
-
-		}
-		flagbullet=returnSec();
-	}
-	 */
 
 
 
