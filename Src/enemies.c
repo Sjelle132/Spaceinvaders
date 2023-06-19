@@ -29,14 +29,6 @@ void initEnemies(enemies_t enemies[]) {
 }
 
 
-void initEliteEnemy(eliteEnemy_t* EliteEnemy) {
-	EliteEnemy->posX = 0;
-	EliteEnemy->posY = 0;
-	EliteEnemy->velX = 0;
-	EliteEnemy->velY = 0;
-	EliteEnemy->life = 6;
-}
-
 
 //create or draw enemies as array
 void createEnemies(enemies_t enemies[]) {
@@ -45,6 +37,8 @@ void createEnemies(enemies_t enemies[]) {
 	for (int i = 0; i < EnemyCount; i++){
 		if (enemies[i].life > 0){
 			gotoxy(enemies[i].posX,enemies[i].posY);
+
+			fgcolor(2);
 			printf("%c", 219);
 		}
 	}
@@ -60,6 +54,13 @@ void updateEnemies(enemies_t enemies[]){
 			removeEnemies(enemies);
 			enemies[i].life = 0;
 
+
+
+			// i tilfælde af vi gerne vil have enemy til at spawne igen hvis de rammer væggen
+			/*enemies[i].posX = 150;
+			enemies[i].posY = 7+i*8;
+			 */
+
 		} else if (enemies[i].life > 0)  {
 			enemies[i].posX -= 1;
 
@@ -73,6 +74,25 @@ void updateEnemies(enemies_t enemies[]){
 
 }
 
+
+//adds all enemy lives, and when lives == 0, assumes state should go to next lvl.
+void isAllEnemyDead(enemies_t enemies[], int8_t f, spaceship_t spaceship){
+	for (int i = 0; i < EnemyCount; i++) {
+		f += enemies[i].life;
+	}
+	for (int i = 0; i < EnemyCount; i++) {
+
+	if (f == 0 && !(enemies[i].posX == 3) && spaceship.life > 0) {
+		gotoxy(10,8);
+		printf("Good job, next lvl!");
+	} else if (f == 0 && (enemies[i].posX == 3) && spaceship.life > 0) {
+		gotoxy(10,8);
+		printf("Game over, you died because of enemy reach left side");
+	}
+	}
+	gotoxy(6,6);
+	printf("%02d", f);
+}
 
 
 void removeEnemies(enemies_t enemies[]){
@@ -97,9 +117,9 @@ void initEnemyBullet(enemies_t enemies[],enemyBullet_t enemyBullet[]) {
 
 	for (int i = 0; i < EnemyCount; i++){
 		if (enemies[i].life > 0) {
-		enemyBullet[i].posX = enemies[i].posX;
-		enemyBullet[i].posY = enemies[i].posY;
-		enemyBullet[i].true = 1;
+			enemyBullet[i].posX = enemies[i].posX;
+			enemyBullet[i].posY = enemies[i].posY;
+			enemyBullet[i].true = 1;
 		}
 	}
 
@@ -133,10 +153,12 @@ void updateEnemyShoot(enemyBullet_t enemyBullet[],enemies_t enemies[]){
 		if ((enemyBullet[i].posX >= 152 || enemyBullet[i].posX <= 3)){
 			removeEnemyShoot(enemyBullet);
 			enemyBullet[i].true = 0;
-		}else if ((enemyBullet[i].posX >= 3 || enemyBullet[i].posX <= 152) /*&& enemies[i].life > 0*/) {
+		}else if ((enemyBullet[i].posX >= 3 || enemyBullet[i].posX <= 152)) {
 			enemyBullet[i].posX -= 1;
 
 		}
+
+
 	}
 }
 
@@ -179,6 +201,9 @@ void interactionsEnemyBulletHitPlayer(enemyBullet_t enemyBullet[], spaceship_t* 
 		}
 	}
 }
+
+
+
 
 
 
