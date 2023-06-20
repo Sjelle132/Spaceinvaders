@@ -83,6 +83,7 @@ uint8_t stateUpdate(uint8_t state) {
 		break;
 	case MainMenu:
 		stateMainMenu();
+
 		break;
 	case SelDif:
 		stateSelDif();
@@ -92,6 +93,8 @@ uint8_t stateUpdate(uint8_t state) {
 		break;
 	case GameEasy:
 		stateGameEasy();
+
+
 		break;
 	case GameMedium:
 		stateGameMedium();
@@ -101,6 +104,7 @@ uint8_t stateUpdate(uint8_t state) {
 
 	case GameOver:
 		stateGameOver();
+
 		break;
 	}
 }
@@ -129,6 +133,8 @@ void stateGameEasy() {
 	stateStartGame = 1;
 	stateReader = 0;
 	k = 300;
+
+
 }
 
 void stateGameMedium(){
@@ -151,4 +157,5 @@ void stateGameOver(){
 	stateStartGame = 0;
 	stateReader = 1;
 	windowGameOver();
+
 }

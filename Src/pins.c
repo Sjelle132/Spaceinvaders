@@ -46,38 +46,64 @@ void setLed(){
 		GPIOC->ODR |= (0x0001 << 7);
 
 		//pin down
-		}else if (joystickState == 2){
-			GPIOA->ODR |= (0x0001 << 9);
-			GPIOB->ODR = (0x0000 << 4);
-			GPIOC->ODR |= (0x0001 << 7);
+	}else if (joystickState == 2){
+		GPIOA->ODR |= (0x0001 << 9);
+		GPIOB->ODR = (0x0000 << 4);
+		GPIOC->ODR |= (0x0001 << 7);
 
 		//pin left
-		}else if (joystickState == 4){
-			GPIOA->ODR |= (0x0001 << 9);
-			GPIOB->ODR |= (0x0001 << 4);
-			GPIOC->ODR = (0x0000 << 7);
+	}else if (joystickState == 4){
+		GPIOA->ODR |= (0x0001 << 9);
+		GPIOB->ODR |= (0x0001 << 4);
+		GPIOC->ODR = (0x0000 << 7);
 
 		//pin right
-		}else if (joystickState == 8){
-			GPIOA->ODR |= (0x0001 << 9);
-			GPIOB->ODR = (0x0000 << 4);
-			GPIOC->ODR = (0x0000 << 7);
+	}else if (joystickState == 8){
+		GPIOA->ODR |= (0x0001 << 9);
+		GPIOB->ODR = (0x0000 << 4);
+		GPIOC->ODR = (0x0000 << 7);
 
 		//pin center
-		}else if (joystickState == 16){
-			GPIOA->ODR = (0x0000 << 9);
-			GPIOB->ODR = (0x0000 << 4);
-			GPIOC->ODR |= (0x0001 << 7);
-		}else {
-			GPIOA->ODR = (0x0000 << 9);
-			GPIOB->ODR = (0x0000 << 4);
-			GPIOC->ODR = (0x0000 << 7);
-		}
+	}else if (joystickState == 16){
+		GPIOA->ODR = (0x0000 << 9);
+		GPIOB->ODR = (0x0000 << 4);
+		GPIOC->ODR |= (0x0001 << 7);
+	}else {
+		GPIOA->ODR = (0x0000 << 9);
+		GPIOB->ODR = (0x0000 << 4);
+		GPIOC->ODR = (0x0000 << 7);
 	}
+}
+
+
+void setLedForGame(int8_t f){
+	if (f == 1) {
+		GPIOA->ODR |= (0x0001 << 9);
+		//GPIOB->ODR |= (0x0001 << 4);
+		GPIOC->ODR |= (0x0001 << 7);
+	} else {
+		GPIOA->ODR &= ~(0x0001 << 9);
+		//GPIOB->ODR |= (0x0001 << 4);
+		GPIOC->ODR &= ~(0x0001 << 7);
+	}
+
+	if (f==0) {
+		GPIOA->ODR |= (0x0001 << 9);
+		GPIOB->ODR |= (0x0001 << 4);
+		//GPIOC->ODR |= (0x0001 << 7);
+
+	} else {
+		GPIOA->ODR &= ~(0x0001 << 9);
+		GPIOB->ODR &= ~(0x0001 << 4);
+		//GPIOC->ODR |= (0x0001 << 7);
+	}
+}
+
 
 
 void initPins(){
-//	RCC->AHBENR |= RCC_AHBPeriph_GPIOA | RCC_AHBPeriph_GPIOB | RCC_AHBPeriph_GPIOC; // Enable clock for GPIO Port
+	RCC->AHBENR |= RCC_AHBPeriph_GPIOA | RCC_AHBPeriph_GPIOB | RCC_AHBPeriph_GPIOC; // Enable clock for GPIO Port
+
 
 	GPIOA->OSPEEDR &= ~(0x00000003 << (9 * 2)); // Clear speed register
 	GPIOA->OSPEEDR |= (0x00000002 << (9 * 2)); //Set speed register
@@ -99,6 +125,7 @@ void initPins(){
 	GPIOB->MODER |= (0x00000001 << (4 * 2)); //Set mode register
 	GPIOC->MODER &= ~(0x00000003 << (7 * 2)); //Clear mode register
 	GPIOC->MODER |= (0x00000001 << (7 * 2)); //Set mode register
+
 }
 
 
