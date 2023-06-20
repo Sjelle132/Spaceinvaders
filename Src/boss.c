@@ -148,6 +148,7 @@ void removeBossShoot(bossBullet_t bossBullet[]){
 	}
 }
 
+
 void interactionsBossBulletHitPlayer(bossBullet_t bossBullet[], spaceship_t* spaceship){
 	for (int i = 0; i < 1; i++) {
 		if (
@@ -168,13 +169,3 @@ void interactionsBossBulletHitPlayer(bossBullet_t bossBullet[], spaceship_t* spa
 		}
 	}
 }
-
-
-
-
-
-
-
-
-
-

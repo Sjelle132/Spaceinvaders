@@ -19,6 +19,7 @@
 #include "gameState.h"
 #include "enemies.h"
 #include "boss.h"
+#include "asteroids.h"
 
 
 int main(void)
@@ -54,6 +55,9 @@ int main(void)
 	bossBullet_t bossBullet[1];
 	initBossBullet(bossBullet, boss);
 
+	// initialize the asteroid
+	asteroids_t asteroid[numAsteroids];
+	initAsteroids(asteroid);
 
 	//initialize the spaceship start point and velocity
 	spaceship_t spaceship;
@@ -77,8 +81,8 @@ int main(void)
 	while(1){
 		int8_t EnemyLivesCount = isAllEnemyDead(enemies, &spaceship);
 
-		gotoxy(6,6);
-		printf("%02d", EnemyLivesCount);
+		//	gotoxy(6,6);
+		//printf("%02d", EnemyLivesCount);
 
 		//reading states
 		if(stateReader == 1 && stateStartGame == 0){
@@ -94,6 +98,12 @@ int main(void)
 		else if(stateStartGame == 1 && stateReader == 0 && EnemyLivesCount > 0){
 			TIM15->CR1 = 1;
 			lcdTimeDisplay();
+
+
+			drawAsteroid(asteroid);
+			removeAsteroid(asteroid);
+
+
 			//reads keyboard input all the time
 			uint8_t directionState = keyboardController();
 
@@ -129,6 +139,8 @@ int main(void)
 				for (int j = 0; j < 10; j++){
 					removeBullet(&bullet[j]);
 					updateBullet(&bullet[j]);
+				//	applyGravity(asteroid, &bullet[j]);
+					collisionDetectionA(asteroid, &bullet[j]);
 					interactionsPlayerBulletHitEnemy(enemies, &bullet[j]);
 					interactionsPlayerBulletHitBoss(boss, &bullet[j] );
 				}
@@ -164,27 +176,27 @@ int main(void)
 			bossShoot(bossBullet,boss);
 			removeBossShoot(bossBullet);
 
+			if (elapsed_time_enemy  >= 200 && EnemyLivesCount == 0) {
+				elapsed_time_enemy  = 0;
+				updateBoss(boss);
+			}
+
+			//	createBoss(boss);
+			//removeBoss(boss);
+
+			if (elapsed_time_Boss >= 20 && EnemyLivesCount == 0) {
+				elapsed_time_Boss = 0;
+				updateBossShoot(bossBullet, boss);
+				interactionsBossBulletHitPlayer(bossBullet, &spaceship);
+			}
+
+
+			if (spaceship.life == 0){
+				stateGameOver();
+			}
 		}
 
 
-		if (elapsed_time_enemy  >= 200 && EnemyLivesCount == 0) {
-			elapsed_time_enemy  = 0;
-			updateBoss(boss);
-		}
-
-		createBoss(boss);
-		removeBoss(boss);
-
-		if (elapsed_time_Boss >= 20 && EnemyLivesCount == 0) {
-			elapsed_time_Boss = 0;
-			updateBossShoot(bossBullet, boss);
-			interactionsBossBulletHitPlayer(bossBullet, &spaceship);
-		}
-
-
-		if (spaceship.life == 0){
-			stateGameOver();
-		}
 	}
 
 	/*

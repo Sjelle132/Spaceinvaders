@@ -105,6 +105,7 @@ uint8_t stateUpdate(uint8_t state) {
 	}
 }
 
+
 void stateStartMenu() {
 	windowStart();
 }
