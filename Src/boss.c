@@ -9,7 +9,7 @@
 
 
 #define EnemyCount 5
-//#define BossBulletCount 1
+
 
 void initBoss(boss_t boss[]){
 	for (int i = 0; i < 1; i++) {
@@ -20,6 +20,7 @@ void initBoss(boss_t boss[]){
 }
 
 
+//display boss
 void createBoss(boss_t boss[]) {
 	for (int i = 0; i < 1; i++) {
 		if (boss[i].life > 0)  {
@@ -30,6 +31,8 @@ void createBoss(boss_t boss[]) {
 	}
 }
 
+
+//update positioning of boss
 void updateBoss(boss_t boss[]) {
 	for (int i = 0; i < 1; i++) {
 		if (boss[i].posX >= 152 || boss[i].posX <= 3) {
@@ -37,7 +40,6 @@ void updateBoss(boss_t boss[]) {
 			boss[i].life = 0;
 		} else if (boss[i].life > 0 )  {
 			boss[i].posX -= 1;
-
 			boss[i].posX = boss[i].posX;
 			boss[i].posY = boss[i].posY;
 		}
@@ -51,40 +53,8 @@ void removeBoss(boss_t boss[]) {
 		if (boss[i].life > 0) {
 			gotoxy(boss[i].posX+1,boss[i].posY);
 			printf("%c", 32);
-
-			/*	gotoxy(boss->posX+1,boss->posY);
-			printf("%c", 32);
-
-
-			gotoxy(boss->posX+1,boss->posY-1);
-			printf("%c", 32);
-
-			gotoxy(boss->posX,boss->posY-1);
-			printf("%c", 32);
-
-			gotoxy(boss->posX-1,boss->posY-1);
-			printf("%c", 32);
-
-			gotoxy(boss->posX-1,boss->posY);
-			printf("%c", 32);
-
-			gotoxy(boss->posX-1,boss->posY+1);
-			printf("%c", 32);
-
-			gotoxy(boss->posX,boss->posY+1);
-			printf("%c", 32);
-
-			gotoxy(boss->posX+1,boss->posY+1);
-			printf("%c", 32);
-
-			 */
-
-
-
 		}
 	}
-
-
 }
 
 
@@ -98,13 +68,9 @@ void initBossBullet(bossBullet_t bossBullet[], boss_t* boss) {
 			bossBullet[i].true = 1;
 		}
 	}
-
-
 }
 
 void bossShoot(bossBullet_t bossBullet[], boss_t* boss){
-
-
 	for (int i = 0; i<1;i++){
 		if (bossBullet[i].true){
 
@@ -114,11 +80,7 @@ void bossShoot(bossBullet_t bossBullet[], boss_t* boss){
 			bossBullet[i].posX = boss[i].posX;
 			bossBullet[i].posY = boss[i].posY;
 			bossBullet[i].true = 1;
-
 		}
-
-
-
 	}
 }
 
@@ -148,7 +110,7 @@ void removeBossShoot(bossBullet_t bossBullet[]){
 	}
 }
 
-
+//checks to see if bossBullets hit spaceship
 void interactionsBossBulletHitPlayer(bossBullet_t bossBullet[], spaceship_t* spaceship){
 	for (int i = 0; i < 1; i++) {
 		if (

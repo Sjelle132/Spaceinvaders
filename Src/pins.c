@@ -13,7 +13,7 @@
 #define JOYSTICK_RIGHT_PIN 3
 #define JOYSTICK_CENTER_PIN 4
 
-
+//not used
 int32_t readJoystick(){
 	RCC->AHBENR |= RCC_AHBPeriph_GPIOA | RCC_AHBPeriph_GPIOB | RCC_AHBPeriph_GPIOC; // Enable clock for GPIO Port A
 
@@ -31,10 +31,11 @@ int32_t readJoystick(){
 	if (previousJoyStickState != joyStickState){
 		printf("%d", joyStickState);
 	}
-
 	previousJoyStickState = joyStickState;
 }
 
+
+//not used
 void setLed(){
 
 	int16_t joystickState = readJoystick();
@@ -79,23 +80,18 @@ void setLed(){
 void setLedForGame(int8_t f){
 	if (f == 1) {
 		GPIOA->ODR |= (0x0001 << 9);
-		//GPIOB->ODR |= (0x0001 << 4);
 		GPIOC->ODR |= (0x0001 << 7);
 	} else {
 		GPIOA->ODR &= ~(0x0001 << 9);
-		//GPIOB->ODR |= (0x0001 << 4);
 		GPIOC->ODR &= ~(0x0001 << 7);
 	}
 
 	if (f==0) {
 		GPIOA->ODR |= (0x0001 << 9);
 		GPIOB->ODR |= (0x0001 << 4);
-		//GPIOC->ODR |= (0x0001 << 7);
-
 	} else {
 		GPIOA->ODR &= ~(0x0001 << 9);
 		GPIOB->ODR &= ~(0x0001 << 4);
-		//GPIOC->ODR |= (0x0001 << 7);
 	}
 }
 

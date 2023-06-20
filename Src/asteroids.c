@@ -46,6 +46,7 @@ void removeAsteroid(asteroids_t asteroid[]) {
 	}
 }
 
+//not used
 void collisionDetectionA(asteroids_t asteroid[], bullet_t* bullet) {
 	for (int i = 0; i < 5; i++){
 		if ((bullet->posX >= asteroid[i].posX +1  && bullet->posX <= asteroid[i].posX + 1) &&
@@ -54,6 +55,7 @@ void collisionDetectionA(asteroids_t asteroid[], bullet_t* bullet) {
 		}
 	}
 }
+
 
 void applyGravity(asteroids_t asteroid[], bullet_t* bullet) {
 	//if (bullet->true) {

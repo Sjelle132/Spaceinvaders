@@ -26,13 +26,10 @@ void initEnemies(enemies_t enemies[]) {
 
 //create or draw enemies as array
 void createEnemies(enemies_t enemies[]) {
-
-
 	for (int i = 0; i < EnemyCount; i++){
 		if (enemies[i].life > 0){
 			gotoxy(enemies[i].posX,enemies[i].posY);
-
-			fgcolor(2);
+			fgcolor(2); //color red
 			printf("%c", 219);
 		}
 	}
@@ -52,23 +49,12 @@ void updateEnemies(enemies_t enemies[]){
 	}
 }
 
-//adds all enemy lives, and when lives == 0, assumes state should go to next lvl.
+//calculates the sum of enemies lives, and return that value
 uint16_t isAllEnemyDead(enemies_t enemies[] , spaceship_t* spaceship){
 	uint16_t sumEnemyLives = 0;
-
 	for (int i = 0; i < EnemyCount; i++) {
 		sumEnemyLives += enemies[i].life;
 	}
-/*
-	for (int i = 0; i < EnemyCount; i++) {
-		if (sumEnemyLives == 0 && !(enemies[i].posX == 3) && spaceship->life > 0) {
-			gotoxy(10,8);
-			printf("Good job, next lvl!");
-		} else if (sumEnemyLives == 0 && (enemies[i].posX == 3) && spaceship->life > 0) {
-			gotoxy(10,8);
-			printf("Game over, you died because of enemy reach left side");
-		}
-	}*/
 	return sumEnemyLives;
 }
 
@@ -81,8 +67,8 @@ void removeEnemies(enemies_t enemies[]){
 	}
 }
 
-//init bullets from enemies
 
+//init bullets for enemies
 void initEnemyBullet(enemies_t enemies[],enemyBullet_t enemyBullet[]) {
 	for (int i = 0; i < EnemyCount; i++){
 		if (enemies[i].life > 0) {
@@ -148,8 +134,6 @@ void interactionsEnemyBulletHitPlayer(enemyBullet_t enemyBullet[], spaceship_t* 
 
 			//if enemyBullet hits -> spaceship life goes -1
 			spaceship->life--;
-			gotoxy(20,10);
-			printf("%d", spaceship->life);
 			break;
 		}
 	}
@@ -161,48 +145,3 @@ void interactionsEnemyBulletHitPlayer(enemyBullet_t enemyBullet[], spaceship_t* 
 
 
 
-
-
-/*
-
-switch(joystickState){
-	case 2:
-		enemies->posY += 1;
-		enemies->velY = 1;
-		enemies->velX = 0;
-		//rotateVector((&enemies->posX,&enemies->posY), 5);
-		break;
-		//pin up
-	}else if (joystickState == 1){
-		enemies->posY -= 1;
-		enemies->velY = -1;
-		enemies->velX = 0;
-		//rotateVector((&enemies->posX,&enemies->posY), -5);
-
-		//pin left
-	}else if (joystickState == 4){
-		enemies->posX -= 1;
-		enemies->velY = 0;
-		enemies->velX = -1;
-
-		//pin right
-	}else if (joystickState == 8){
-		enemies->posX += 1;
-		enemies->velY = 0;
-		enemies->velX = 1;
-
-		//pin center
-	}else if (joystickState == 16){
-
-		//else pos = pos, vel = vel
-	}else {
-		enemies->posX = enemies->posX;
-		enemies->posY = enemies->posY;
-		enemies->velX = 0;
-		enemies->velY = 0;
-
-
-	}
-
-
-}*/
