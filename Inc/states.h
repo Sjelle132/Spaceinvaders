@@ -30,7 +30,7 @@
 #define GameOver 7
 
 
-extern uint32_t k;
+extern int16_t playerBulletSpeed, enemyBulletSpeed, bossBulletSpeed, enemyMovementSpeed, bossMovementSpeed;
 extern int8_t stateStartGame;
 extern int8_t stateReader;
 

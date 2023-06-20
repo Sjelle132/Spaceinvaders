@@ -15,5 +15,6 @@
 int32_t readJoystick();
 void initPins();
 void setLed();
+void setLedForGame(int8_t f);
 
 #endif /* PINS_H_ */

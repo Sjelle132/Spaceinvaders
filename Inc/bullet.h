@@ -24,7 +24,6 @@ typedef struct {
 	int16_t velX;
 	int16_t velY;
 	int8_t true;
-	char score;
 
 } bullet_t;
 
@@ -42,5 +41,5 @@ void spawnBullet(bullet_t* bullet);
 void interactionsPlayerBulletHitEnemy(enemies_t enemies[], bullet_t* bullet );
 void interactionsPlayerBulletHitBoss(boss_t boss[], bullet_t* bullet );
 
-uint32_t calculateDistance(int32_t x1, int32_t y1, int32_t x2, int32_t y2);
+int32_t calculateDistance(int32_t x1, int32_t y1, int32_t x2, int32_t y2);
 #endif /* BULLET_H_ */

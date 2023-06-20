@@ -16,15 +16,13 @@ typedef struct{
 	int16_t hours,minutes,seconds,hndrseconds,miliseconds,flag;
 } timeS_t;
 
-
-
 extern timeS_t tid;
-extern volatile uint32_t elapsed_time;
-extern volatile uint32_t elapsed_time_enemy;
-extern volatile uint32_t elapsed_time_PlayerBullet;
-extern volatile uint32_t elapsed_time_Asteroid;
-extern volatile uint32_t elapsed_time_Boss;
-
+extern volatile uint32_t elapsed_time_playerBullet;
+extern volatile uint32_t elapsed_time_enemyBullet;
+extern volatile uint32_t elapsed_time_enemyMovement;
+extern volatile uint32_t elapsed_time_bossBullet;
+extern volatile uint32_t elapsed_time_bossMovement;
+extern volatile uint32_t elapsed_time_asteroid;
 
 void configTimer();
 void TIM1_BRK_TIM15_IRQHandler(void);
@@ -34,9 +32,5 @@ int32_t returnMilisec();
 int32_t returnHNDR();
 //void clockCounter(timeS_t* tid);
 void tidCalc (timeS_t* tid);
-
-
-
-
 
 #endif /* TIMERS_H_ */
