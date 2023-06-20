@@ -53,13 +53,13 @@ void updateEnemies(enemies_t enemies[]){
 }
 
 //adds all enemy lives, and when lives == 0, assumes state should go to next lvl.
-int8_t isAllEnemyDead(enemies_t enemies[] , spaceship_t* spaceship){
-	int8_t sumEnemyLives = 0;
+uint16_t isAllEnemyDead(enemies_t enemies[] , spaceship_t* spaceship){
+	uint16_t sumEnemyLives = 0;
 
 	for (int i = 0; i < EnemyCount; i++) {
 		sumEnemyLives += enemies[i].life;
 	}
-
+/*
 	for (int i = 0; i < EnemyCount; i++) {
 		if (sumEnemyLives == 0 && !(enemies[i].posX == 3) && spaceship->life > 0) {
 			gotoxy(10,8);
@@ -68,8 +68,7 @@ int8_t isAllEnemyDead(enemies_t enemies[] , spaceship_t* spaceship){
 			gotoxy(10,8);
 			printf("Game over, you died because of enemy reach left side");
 		}
-	}
-
+	}*/
 	return sumEnemyLives;
 }
 

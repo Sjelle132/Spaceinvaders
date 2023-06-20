@@ -42,13 +42,6 @@ void updateBullet(bullet_t* bullet) {
 	} else if(bullet->true && (bullet->posX >= 2 || bullet->posX <= 150)) {
 		bullet->posX += 1;
 	}
-
-	//bullet only shooting right
-	//if (bullet->true ) {
-
-
-
-	//}
 }
 
 void removeBullet(bullet_t* bullet) {
@@ -56,27 +49,25 @@ void removeBullet(bullet_t* bullet) {
 	printf("%c", 32);
 }
 
+static int score = 0;
 
 // interactions
-
 void interactionsPlayerBulletHitEnemy(enemies_t enemies[], bullet_t* bullet ){
 
 	for (int i = 0; i < 5; i++) { //5 skal ændres til enemy count, men det kan Liou måske gøre?
-		if ((bullet->posX == enemies[i].posX && bullet->posY == enemies[i].posY && enemies[i].life > 0) || (bullet->posX == enemies[i].posX-1 && bullet->posY == enemies[i].posY && enemies[i].life > 0)) {
+		if (bullet->posX == enemies[i].posX && bullet->posY == enemies[i].posY && enemies[i].life > 0 || (bullet->posX == enemies[i].posX-1 && bullet->posY == enemies[i].posY && enemies[i].life > 0)) {
 			enemies[i].life--;
-			bullet->score++;
-			break;
+			score++;
 		}
 	}
 
 	int scoreOneOffset = 7;
 	int scoreTenOffset = 6;
-
-//	int scoreOne = bullet->score % 10;
-	int scoreTen = bullet->score / 10;
+	int scoreOne = score % 10;
+	int scoreTen = score / 10;
 
 	for(int j = 0; j < 5; j++){
-		buffer[j+(scoreOneOffset * 5)+(128 * 2)] = character_data[bullet->score + 16][j];
+		buffer[j+(scoreOneOffset * 5)+(128 * 2)] = character_data[scoreOne + 16][j];
 	}
 	lcd_push_buffer(buffer);
 
@@ -90,7 +81,7 @@ void interactionsPlayerBulletHitBoss(boss_t boss[], bullet_t* bullet ){
 	for (int i = 0; i < 1; i++) { //5 skal ændres til enemy count, men det kan Liou måske gøre?
 		if (bullet->posX == boss[i].posX && bullet->posY == boss[i].posY && boss[i].life > 0) {
 			boss[i].life-- ;
-			break;
+			score++;
 		}
 
 	}

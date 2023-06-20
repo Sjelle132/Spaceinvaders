@@ -49,7 +49,6 @@ int main(void)
 
 	//init boss
 	boss_t boss[1];
-	initBoss(boss);
 
 	//init boss bulets
 	bossBullet_t bossBullet[1];
@@ -75,6 +74,7 @@ int main(void)
 	int16_t flagspaceship = 0;
 	int8_t i = 0;
 	int32_t spawntime = 0;
+	int8_t bossCreated = 0;
 
 
 	//main loop
@@ -83,9 +83,6 @@ int main(void)
 		//Reads gameState in order to change LED color between red and green.
 		setLedForGame(stateReader);
 
-
-		//Function that checks for enemy lives
-		int8_t EnemyLivesCount = isAllEnemyDead(enemies, &spaceship);
 
 		//reading states
 		if(stateReader == 1 && stateStartGame == 0){
@@ -98,14 +95,12 @@ int main(void)
 			}
 		}
 
-		else if(stateStartGame == 1 && stateReader == 0 && EnemyLivesCount > 0){
+		else if(stateStartGame == 1 && stateReader == 0){
 			TIM15->CR1 = 1;
 			lcdTimeDisplay();
 
-
 			drawAsteroid(asteroid);
 			removeAsteroid(asteroid);
-
 
 			//reads keyboard input all the time
 			uint8_t directionState = keyboardController();
@@ -136,32 +131,38 @@ int main(void)
 				spawntime=returnHNDR();
 			}
 
-			if (elapsed_time_PlayerBullet >= 100 ){
-				elapsed_time_PlayerBullet = 0;
+			if (elapsed_time_playerBullet >= playerBulletSpeed ){
+				elapsed_time_playerBullet = 0;
 				bullet->true = 1;
 				for (int j = 0; j < 10; j++){
 					removeBullet(&bullet[j]);
 					updateBullet(&bullet[j]);
 					applyGravity(asteroid, &bullet[j]);
-					collisionDetectionA(asteroid, &bullet[j]);
+			//		collisionDetectionA(asteroid, &bullet[j]);
 					interactionsPlayerBulletHitEnemy(enemies, &bullet[j]);
 					interactionsPlayerBulletHitBoss(boss, &bullet[j] );
-
 				}
 			}
 
+			/*
+			 * Regel:
+			 * For det gældende object der trackes og mister liv, skal interactionen ligge i tilhørende elapsed time
+			 * Altså når vi tracker om enemies bliver ramt, ligger dens interaction i elapsed_time_enemy
+			 * Dermed opdateres tracking af om bullets rammer synkront med opdatering af enemies.
+			 *
+			 */
 
 			//Updating enemies
-			if (elapsed_time_enemy  >= 200 ) {
-				elapsed_time_enemy  = 0;
+			if (elapsed_time_enemyMovement  >= enemyMovementSpeed ) {
+				elapsed_time_enemyMovement  = 0;
 				updateEnemies(enemies);
-				updateBoss(boss);
 			}
+
 			createEnemies(enemies);
 			removeEnemies(enemies);
 
-			if (elapsed_time >= 100 ) {
-				elapsed_time = 0;
+			if (elapsed_time_enemyBullet >= enemyBulletSpeed ) {
+				elapsed_time_enemyBullet = 0;
 				updateEnemyShoot(enemyBullet,enemies);
 				interactionsEnemyBulletHitPlayer(enemyBullet, &spaceship);
 			}
@@ -170,23 +171,43 @@ int main(void)
 			removeEnemyShoot(enemyBullet);
 
 
-			bossShoot(bossBullet,boss);
-			removeBossShoot(bossBullet);
+			//sum of all HP from enemies
+			uint16_t EnemyLivesCount = isAllEnemyDead(enemies, &spaceship);
 
-			if (elapsed_time_enemy  >= 200 && EnemyLivesCount == 0) {
-				elapsed_time_enemy  = 0;
-				updateBoss(boss);
+			gotoxy(6,6);
+			printf("%02d",EnemyLivesCount);
+
+			if(EnemyLivesCount <= 1 && !bossCreated){
+				initBoss(boss);
+				bossCreated = 1;
 			}
 
-			//createBoss(boss);
-			//removeBoss(boss);
+			if(bossCreated){
+				if (elapsed_time_bossMovement >= bossMovementSpeed) {
+					elapsed_time_bossMovement = 0;
+					updateBoss(boss);
+				}
 
-			if (elapsed_time_Boss >= 20 && EnemyLivesCount == 0) {
-				elapsed_time_Boss = 0;
-				updateBossShoot(bossBullet, boss);
-				interactionsBossBulletHitPlayer(bossBullet, &spaceship);
+				createBoss(boss);
+				removeBoss(boss);
+
+				if (elapsed_time_bossBullet >= bossBulletSpeed) {
+					elapsed_time_bossBullet = 0;
+					updateBossShoot(bossBullet, boss);
+					interactionsBossBulletHitPlayer(bossBullet, &spaceship);
+				}
+				bossShoot(bossBullet,boss);
+				removeBossShoot(bossBullet);
 			}
 
+			if(bossCreated && boss->life <= 0){
+				initEnemies(enemies);
+				initBoss(boss);
+				bossCreated = 0;
+				enemyBulletSpeed -= 10;
+				enemyMovementSpeed -= 10;
+				bossMovementSpeed -= 10;
+			}
 
 			if (spaceship.life == 0){
 				stateGameOver();

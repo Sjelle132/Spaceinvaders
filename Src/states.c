@@ -7,7 +7,6 @@
 
 #include "states.h"
 
-uint32_t k = 0;
 int8_t stateStartGame = 0;
 int8_t stateReader = 1;
 
@@ -50,19 +49,20 @@ uint8_t processInput(uint8_t state, uint8_t input,spaceship_t* spaceship) {
 		break;
 
 	case GameEasy:
-		if (spaceship->life <= 0) {
-			newState = GameOver;
+		if (input == 'b') {
+			newState = MainMenu;
 		}
 		break;
+
 	case GameMedium:
-		if (spaceship->life <= 0) {
-			newState = GameOver;
+		if (input == 'b') {
+			newState = MainMenu;
 		}
 		break;
 
 	case GameHard:
-		if (spaceship->life <= 0) {
-			newState = GameOver;
+		if (input == 'b') {
+			newState = MainMenu;
 		}
 		break;
 
@@ -70,6 +70,7 @@ uint8_t processInput(uint8_t state, uint8_t input,spaceship_t* spaceship) {
 		if (input == '1'){
 			newState = MainMenu;
 		}
+		break;
 	}
 
 	return newState;
@@ -79,11 +80,9 @@ uint8_t stateUpdate(uint8_t state) {
 	switch (state) {
 	case StartMenu:
 		stateStartMenu();
-
 		break;
 	case MainMenu:
 		stateMainMenu();
-
 		break;
 	case SelDif:
 		stateSelDif();
@@ -93,8 +92,6 @@ uint8_t stateUpdate(uint8_t state) {
 		break;
 	case GameEasy:
 		stateGameEasy();
-
-
 		break;
 	case GameMedium:
 		stateGameMedium();
@@ -104,11 +101,11 @@ uint8_t stateUpdate(uint8_t state) {
 
 	case GameOver:
 		stateGameOver();
-
 		break;
 	}
 }
 
+int16_t playerBulletSpeed, enemyBulletSpeed, bossBulletSpeed, enemyMovementSpeed, bossMovementSpeed = 0;
 
 void stateStartMenu() {
 	windowStart();
@@ -132,30 +129,29 @@ void stateGameEasy() {
 	windowGame();
 	stateStartGame = 1;
 	stateReader = 0;
-	k = 300;
-
-
+	playerBulletSpeed = 100;
+	enemyBulletSpeed = 100;
+	enemyMovementSpeed = 200;
+	bossBulletSpeed = 20;
+	bossMovementSpeed = 150;
 }
 
 void stateGameMedium(){
 	windowGame();
 	stateStartGame = 1;
 	stateReader = 0;
-	k = 200;
-
+	playerBulletSpeed = 100;
 }
 
 void stateGameHard(){
 	windowGame();
 	stateStartGame = 1;
 	stateReader = 0;
-	k = 100;
-
+	playerBulletSpeed = 100;
 }
 
 void stateGameOver(){
 	stateStartGame = 0;
 	stateReader = 1;
 	windowGameOver();
-
 }
