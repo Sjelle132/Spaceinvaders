@@ -7,6 +7,7 @@
 
 #include "timers.h"
 
+//different global variables for time
 volatile uint32_t elapsed_time_playerBullet = 0;
 volatile uint32_t elapsed_time_enemyBullet = 0;
 volatile uint32_t elapsed_time_enemyMovement = 0;
@@ -14,6 +15,7 @@ volatile uint32_t elapsed_time_bossBullet = 0;
 volatile uint32_t elapsed_time_bossMovement = 0;
 volatile uint32_t elapsed_time_asteroid = 0;
 
+//init time to 00:00:00
 timeS_t tid = {0,0,0,0,0,0};
 
 void configTimer(){
@@ -31,6 +33,7 @@ void configTimer(){
 }
 void TIM1_BRK_TIM15_IRQHandler(void) {
 
+	//time for LCD display
 	tid.miliseconds++;
 	if (tid.miliseconds == 100){
 		tid.hndrseconds++;
@@ -53,7 +56,8 @@ void TIM1_BRK_TIM15_IRQHandler(void) {
 		tid.hours = tid.hours;
 	}
 
-	//test enemies - Increment elapsed time
+	//test enemies - Increment elapsed time    <- skal det her stå der?
+	//increment the global variables
 	elapsed_time_playerBullet++;
 	elapsed_time_enemyBullet++;
 	elapsed_time_enemyMovement++;
@@ -67,6 +71,9 @@ void TIM1_BRK_TIM15_IRQHandler(void) {
 	TIM15->SR &= ~0x0001; // Clear interrupt bit
 }
 
+
+
+//for exercise, not used
 int enableSomething = 0;
 
 void prntClk(){
@@ -112,6 +119,7 @@ void prntClk(){
 	}
 }
 
+//return the time data
 int32_t returnSec(){
 	return tid.seconds;
 }

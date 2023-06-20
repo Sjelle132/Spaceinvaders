@@ -15,11 +15,6 @@ int32_t keyboardController() {
     int k = 0;
 
     if (bogstav != NULL) {
-        *(parray + k) = bogstav;
-        k++;
-
-       // printf("%s", arrayBogstaver);
-
         if (bogstav == 'w'){
         	directionsState = 1;
         }else if (bogstav == 's'){
@@ -32,13 +27,12 @@ int32_t keyboardController() {
         	directionsState = 64;
         }
     }
-    arrayBogstaver[255] = '\0';
     return directionsState;
 }
 
 
 
-
+//for exercise, not used
 void smthFunny1(){
 	int8_t arrayBogstaver[256];
 	int8_t *parray = arrayBogstaver;
