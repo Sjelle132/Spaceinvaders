@@ -25,7 +25,7 @@
 int main(void)
 {
 	// Setup communication with the PC
-	uart_init(115200);
+	uart_init(1048576);
 
 	//initializing parameters and create windows
 	initWindow();
@@ -79,10 +79,13 @@ int main(void)
 
 	//main loop
 	while(1){
-		int8_t EnemyLivesCount = isAllEnemyDead(enemies, &spaceship);
 
-		//	gotoxy(6,6);
-		//printf("%02d", EnemyLivesCount);
+		//Reads gameState in order to change LED color between red and green.
+		setLedForGame(stateReader);
+
+
+		//Function that checks for enemy lives
+		int8_t EnemyLivesCount = isAllEnemyDead(enemies, &spaceship);
 
 		//reading states
 		if(stateReader == 1 && stateStartGame == 0){
@@ -139,20 +142,14 @@ int main(void)
 				for (int j = 0; j < 10; j++){
 					removeBullet(&bullet[j]);
 					updateBullet(&bullet[j]);
-				//	applyGravity(asteroid, &bullet[j]);
+					applyGravity(asteroid, &bullet[j]);
 					collisionDetectionA(asteroid, &bullet[j]);
 					interactionsPlayerBulletHitEnemy(enemies, &bullet[j]);
 					interactionsPlayerBulletHitBoss(boss, &bullet[j] );
+
 				}
 			}
 
-			/*
-			 * Regel:
-			 * For det gældende object der trackes og mister liv, skal interactionen ligge i tilhørende elapsed time
-			 * Altså når vi tracker om enemies bliver ramt, ligger dens interaction i elapsed_time_enemy
-			 * Dermed opdateres tracking af om bullets rammer synkront med opdatering af enemies.
-			 *
-			 */
 
 			//Updating enemies
 			if (elapsed_time_enemy  >= 200 ) {
@@ -181,7 +178,7 @@ int main(void)
 				updateBoss(boss);
 			}
 
-			//	createBoss(boss);
+			//createBoss(boss);
 			//removeBoss(boss);
 
 			if (elapsed_time_Boss >= 20 && EnemyLivesCount == 0) {
@@ -195,259 +192,6 @@ int main(void)
 				stateGameOver();
 			}
 		}
-
-
 	}
-
-	/*
-
-	clrscr();
-	gotoxy(0,0);
-	windowStart();
-	uint8_t currentState = StartMenu;
-
-	while(1){
-		uint8_t inputKB = uart_get_char();
-		uint8_t newState = processInput(currentState, inputKB);  // Temporary variable to hold the new state
-
-		if (newState != currentState){
-			stateUpdate(newState);
-			currentState = newState;
-		}
-	}
-	 */
-	/*
-
-	uart_init(115200);
-	clrscr();
-	gotoxy(0,0);
-	uint8_t currentState = StartMenu;
-	windowStart();
-
-	while(1){
-		uint8_t inputKB = uart_get_char();
-		uint8_t newState = currentState;  // Temporary variable to hold the new state
-
-		if (currentState == StartMenu) {
-			if (inputKB == 'p' ) {
-				newState = 1;
-			}
-		}
-
-		if (currentState == MainMenu) {
-			if (inputKB == '1') {
-				newState = SelDif;
-			} else if (inputKB == '2') {
-				newState = Help;
-			} else if (inputKB == '3') {
-				newState = MainMenu;
-			}
-		}
-
-		if (currentState == SelDif){
-			if (inputKB == '1' || inputKB == '2' || inputKB == '3'){
-				newState = Game;
-			} else if (inputKB == '4'){
-				newState = MainMenu;
-			}
-		}
-
-		if (currentState == Game){
-			if (inputKB == 'b'){
-				newState = MainMenu;
-			}
-		}
-
-		if (currentState == Help){
-			if (inputKB == '1'){
-				newState = MainMenu;
-			}
-		} //else if (currentState == Game)
-
-		if (newState != currentState) {
-			switch(newState) {
-			case 1:
-				windowMainMenu();
-				break;
-			case 2:
-				windowSelDif();
-				break;
-			case 3:
-				windowHelp();
-				break;
-			case 4:
-				windowGame();
-				break;
-			case 5:
-				break;
-			}
-
-			currentState = newState;
-		}
-	}
-
-	 */
-
-
-	/*
-	uart_init(115200);
-	clrscr();
-	gotoxy(0,0);
-	uint8_t currentState = 0;
-	uint8_t nextState = 0;
-	uint8_t state = 0;
-
-	while(1){
-		uint8_t inputKB = uart_get_char();
-		if(inputKB == 'p' && (currentState == 0 || currentState == 2 || currentState == 3)){
-			nextState = 1;
-		} else if (inputKB == '1' && currentState == 1){
-			nextState = 2;
-		} else if (inputKB == '2' && currentState == 1){
-			nextState = 3;
-		} else if (inputKB == '3' && currentState == 1){
-			nextState = 4;
-		} else if (inputKB == '4' && currentState == 1){
-			nextState = 5;
-		} else{
-
-		}
-
-		if (nextState != currentState){
-			nextState = nextState;
-		}
-
-		switch(nextState){
-		case 0:
-			windowStart();
-			break;
-		case 1:
-			windowMainMenu();
-			break;
-		case 2:
-			windowSelDif();
-			break;
-		case 3:
-			windowHelp();
-			break;
-		case 4:
-			windowHelp();
-			break;
-		case 5:
-			windowGame();
-			break;
-		}
-
-
-		currentState = nextState;
-		nextState = 0;
-	}
-	 */
-
-
-
-
-	/*
-
-	//Exercise 6 - display on LCD screen
-	clrscr();
-	lcd_t lcd;
-	initlcd(&lcd);
-	lcdWriteText("Health: ***", 0);
-	lcdWriteText("Time:", 1);
-	lcdWriteText("Score:", 2);
-
-	//Exercice 6.2
-	initPins();
-	configTimer();
-	while (1) {
-		prntClk();
-		lcdTimeDisplay();
-	}
-	 */
-
-	//Exercise 5 - timer
-	/*	clrscr();
-	gotoxy(0,0);
-	initPins();
-	configTimer();
-	while (1) {
-		prntClk();
-		lcd_update();
-	}
-	 */
-
-	//Current project. Starting window
-	//initWindow(0,0,90,90);
-	/*
-	 *
-	 * clrscr();
-	 * clrscr();color(15,0);
-	 */
-
-
-	/*
-	//Opgave 3
-
-	window2(0, 0, 50, 50, 2);
-
-	//Initalize the ball start point and velocity
-	ball_t balls;
-	initBalls(&balls);
-	displayHit(&balls); //Update hit counter and redraw small-window
-	for(int i = 0; i <= 100; i++){
-		for(int j = 0; j <= 2500; j++){
-			if( j == 2499){
-				showBalls(&balls);
-				removeBall(&balls); 			//Remove the old ball
-				updatePos(&balls); 	//Update position of the ball
-
-			}
-		}
-	}
-	 */
-
-	//Opgave 2.2 - 2,3
-	/*
-	gotoxy(15,5);
-	vector_t vec;
-	initVector(&vec);
-		vec.x = -4 << 14;
-		vec.y = -4 << 14;
-		int32_t deg = 1280;
-	printVector(vec);
-	rotateVector(&vec,deg);
-	gotoxy(16,5);
-	printVector(vec);
-
-	 */
-
-	//printFix(expand(calcSin(126.482736)));
-
-
-	// Opgave 1
-	//	windows title behøver 15
-	//	window(25,0,41,20, "Windows 322", 1);
-	//	window(1, 0, 20, 20, "Window 3", 2);
-
-	//Opgave 2.1
-	/*
-	printFix(expand(calcSin((0))));
-	printf("\n");
-	printFix(expand(calcSin(64)));
-	printf("\n");
-	printFix(expand(calcSin(-111)));
-	printf("\n");
-	printFix(expand(calcSin(923)));
-	printf("\n");
-	printFix(expand(calcCos(0)));
-	printf("\n");
-	printFix(expand(calcCos(64)));
-	printf("\n");
-	printFix(expand(calcCos(-111)));
-	printf("\n");
-	printFix(expand(calcCos(923)));
-	printf("\n");*/
-
 	while (1){}
 }

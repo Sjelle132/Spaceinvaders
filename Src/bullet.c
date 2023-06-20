@@ -62,7 +62,7 @@ void removeBullet(bullet_t* bullet) {
 void interactionsPlayerBulletHitEnemy(enemies_t enemies[], bullet_t* bullet ){
 
 	for (int i = 0; i < 5; i++) { //5 skal ændres til enemy count, men det kan Liou måske gøre?
-		if (bullet->posX == enemies[i].posX && bullet->posY == enemies[i].posY && enemies[i].life > 0) {
+		if ((bullet->posX == enemies[i].posX && bullet->posY == enemies[i].posY && enemies[i].life > 0) || (bullet->posX == enemies[i].posX-1 && bullet->posY == enemies[i].posY && enemies[i].life > 0)) {
 			enemies[i].life--;
 			bullet->score++;
 			break;
@@ -98,10 +98,10 @@ void interactionsPlayerBulletHitBoss(boss_t boss[], bullet_t* bullet ){
 
 int8_t numAsteroids = 5;
 
-uint32_t calculateDistance(int32_t x1, int32_t y1, int32_t x2, int32_t y2) {
-	uint32_t dx = x2 - x1 < 0 ? x1 - x2 : x2 - x1;
-	uint32_t dy = y2 - y1 < 0 ? y1 - y2 : y2 - y1;
-	uint32_t sum = dx + dy;
+int32_t calculateDistance(int32_t x1, int32_t y1, int32_t x2, int32_t y2) {
+	int32_t dx = x2 - x1 < 0 ? x1 - x2 : x2 - x1;
+	int32_t dy = y2 - y1 < 0 ? y1 - y2 : y2 - y1;
+	int32_t sum = dx + dy;
 	return sum;  //manhatten distance (faster than using euclidian(sqrt))
 }
 

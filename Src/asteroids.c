@@ -59,23 +59,28 @@ void applyGravity(asteroids_t asteroid[], bullet_t* bullet) {
 	//if (bullet->true) {
 		for (int i = 0; i < numAsteroids; i++) {
 			// Calculate Manhattan distance between asteroid and bullet
-			int8_t distance = calculateDistance(bullet->posX, bullet->posY, asteroid[i].posX, asteroid[i].posY);
+			int16_t distance = calculateDistance(bullet->posX, bullet->posY, asteroid[i].posX, asteroid[i].posY);
 
 			// Calculate the pulling factor based on distance
-			int8_t pullingFactor = 0;
+			int16_t pullingFactor = 0;
 
 			if (distance < 15){
 				//printf("%d",distance);
-				pullingFactor = (1/distance) + 1;
+				pullingFactor = 1 ;
 			}
 
+
 			// Calculate the direction vector
+			if ((asteroid[i].posY == bullet->posY) || (asteroid[i].posY == bullet->posY-1) || (asteroid[i].posY == bullet->posY+1)){
+
+			} else {
 			int32_t directionX = (asteroid[i].posX > bullet->posX) ? 1 : -1;
 			int32_t directionY = (asteroid[i].posY > bullet->posY) ? 1 : -1;
 
 			// Update the bullet's position based on the pulling factor and direction
-			bullet->posX += pullingFactor * directionX + 1;
-			bullet->posY += pullingFactor * directionY ;
+			bullet->posX += (pullingFactor * directionX + 1) / 16;
+			bullet->posY += pullingFactor * directionY  ;
+		}
 		}
 //	}
 }
