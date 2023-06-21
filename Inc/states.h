@@ -19,6 +19,7 @@
 #include "enemies.h"
 #include "spaceship.h"
 #include "bullet.h"
+#include "boss.h"
 
 #define StartMenu 0
 #define MainMenu 1
@@ -29,11 +30,8 @@
 #define GameHard 6
 #define GameOver 7
 
-
 extern int16_t playerBulletSpeed, enemyBulletSpeed, bossBulletSpeed, enemyMovementSpeed, bossMovementSpeed;
 extern int8_t stateStartGame;
-extern int8_t stateReader;
-
 
 void stateStartMenu();
 void stateMainMenu();
@@ -44,8 +42,7 @@ void stateGameMedium();
 void stateGameHard();
 void stateGameOver();
 
-
-uint8_t processInput(uint8_t state, uint8_t input,spaceship_t* spaceship);
+uint8_t processInput(uint8_t state, uint8_t input, int8_t spaceship);
 uint8_t stateUpdate(uint8_t state);
 
 #endif // STATES_H

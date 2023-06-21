@@ -15,7 +15,6 @@
 #include "math.h"
 #include "ansi.h"
 
-
 /* Exported types -------------------------------------------------------*/
 /* Exported constants ---------------------------------------------------*/
 #define ESC 0x1B

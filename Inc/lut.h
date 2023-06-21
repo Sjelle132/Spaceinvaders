@@ -14,5 +14,4 @@
 // === LUT DECLARATIONS ===
 extern const signed short SIN[512];
 
-
 #endif	// LUTSIN_H

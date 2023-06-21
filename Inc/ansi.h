@@ -39,13 +39,4 @@ void inverse(uint8_t on);
 void clrpkt();
 void hideCursor();
 
-/*
-void window(uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2, char s[], int style);
-void printFix(int32_t i);
-int32_t expand(int32_t i);
-int32_t calcSin(int32_t number);
-int32_t calcCos(int32_t number);
-void window2(uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2,int style);
-//void rotateVector(vector_t* xy, int deg);
-*/
 #endif /* _ANSI_H_ */

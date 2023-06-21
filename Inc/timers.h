@@ -23,7 +23,9 @@ extern volatile uint32_t elapsed_time_enemyMovement;
 extern volatile uint32_t elapsed_time_bossBullet;
 extern volatile uint32_t elapsed_time_bossMovement;
 extern volatile uint32_t elapsed_time_asteroid;
+extern volatile uint32_t elapsed_time_powerup;
 
+void resetTimers();
 void configTimer();
 void TIM1_BRK_TIM15_IRQHandler(void);
 void prntClk();

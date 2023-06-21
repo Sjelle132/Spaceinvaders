@@ -21,5 +21,4 @@ void showBalls(ball_t* b);
 void displayHit(ball_t* b);
 void removeBall(ball_t* b);
 
-
 #endif /* BALLS_H_ */

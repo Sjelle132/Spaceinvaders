@@ -15,10 +15,10 @@ typedef struct {
 
 void initAsteroids(asteroids_t asteroid[]);
 void drawAsteroid(asteroids_t asteroid[]);
-void removeAsteroid(asteroids_t asteroid[]);
-
 void applyGravity(asteroids_t asteroid[], bullet_t* bullet);
-void collisionDetectionA(asteroids_t asteroid[], bullet_t* bullet);
+
+//void removeAsteroid(asteroids_t asteroid[]);
+//void collisionDetectionA(asteroids_t asteroid[], bullet_t* bullet);
 
 
 #endif /* ASTEROIDS_H_ */

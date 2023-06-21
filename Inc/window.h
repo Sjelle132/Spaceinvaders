@@ -10,17 +10,14 @@
 #include "ansi.h"
 #include "stdio.h"
 #include "stdint.h"
+#include "string.h"
 
 #ifndef WINDOW_H_
 #define WINDOW_H_
 
-typedef struct {
-	int rightEdge, leftEdge, topEdge, bottomEdge;
-} window_t;
-
 void initWindow();
-void windowName(uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2, char s[], int style);
-void windowFrame(uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2, int style);
+void windowName(uint32_t x1, uint32_t y1, uint32_t x2, uint32_t y2, char s[], int style);
+void windowFrame(uint32_t x1, uint32_t y1, uint32_t x2, uint32_t y2, int style);
 void nameOnly(uint8_t x, uint8_t y, char string[]);
 void windowMainMenu();
 void windowHelp();

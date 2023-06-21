@@ -11,7 +11,6 @@
 #include "stdint.h"
 #include "stm32f30x_conf.h"
 
-
 int32_t readJoystick();
 void initPins();
 void setLed();

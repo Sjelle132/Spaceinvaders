@@ -10,6 +10,8 @@
 
 #include "stm32f30x_conf.h"
 #include "spaceship.h"
+#include "ansi.h"
+#include "lcd.h"
 
 
 

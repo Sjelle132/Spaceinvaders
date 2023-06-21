@@ -1,12 +1,12 @@
 /*
- * powerup.h
- *
- *  Created on: 14. jun. 2023
- *      Author: filip
+
+powerup.h*
+Created on: 14. jun. 2023
+Author: filip
  */
 
-#ifndef POWERUP_H_
-#define POWERUP_H_
+#ifndef POWERUPH
+#define POWERUPH
 
 #include "stm32f30x_conf.h"
 #include "spaceship.h"
@@ -19,14 +19,14 @@ typedef struct{
 	int8_t collected;
 } powerup_t;
 
-extern powerup_t powerup;
+
 
 void initPowerup(powerup_t* powerup);
 void drawPowerup(powerup_t* powerup);
 void removePowerup(powerup_t* powerup);
 //void collisionDetection(powerup_t* powerup, spaceship_t* spaceship);
 void collisionDetection(powerup_t* powerup, spaceship_t* spaceship);
-void powerupSpell (powerup_t* powerup,bullet_t bullet[]);
+//void powerupSpell (powerup_t* powerup,bullet_t bullet[]);
 
 
-#endif /* POWERUP_H_ */
+#endif /* POWERUPH */

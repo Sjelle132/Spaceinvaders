@@ -16,15 +16,15 @@
 #include "string.h"
 #include "timers.h"
 
-extern uint8_t buffer[];
 
-typedef struct{
-	int i, j;
-} lcd_t;
+extern uint8_t buffer[];
+extern int score;
 
 void initlcd();
 void lcdWriteText(char TtD[], int line);
-void lcd_update(); //Isn't used
 void lcdTimeDisplay();
+void lcdScoreDisplay();
+void lcdHealthDisplay(int8_t spaceship);
+void lcdInstaDeath();
 
 #endif /* LCDFUNC_H_ */
