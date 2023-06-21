@@ -14,8 +14,7 @@ void initWindow(){
 	gotoxy(0,0);
 }
 
-void windowName(uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2, char s[], int style){
-
+void windowName(uint32_t x1, uint32_t y1, uint32_t x2, uint32_t y2, char s[], int style){
 	int i;
 	gotoxy(0,0);
 	if(style == 1){
@@ -105,7 +104,7 @@ void windowName(uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2, char s[], int st
 	}
 }
 
-void windowFrame(uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2, int style){
+void windowFrame(uint32_t x1, uint32_t y1, uint32_t x2, uint32_t y2, int style){
 
 	int i;
 
@@ -196,8 +195,9 @@ void windowHelp(){
 	clrscr();
 	windowName(0,0,30,20,"Help", 2);
 
-	nameOnly(5, 9, "You don't need help");
-	nameOnly(5, 18, "1. Go back");
+	nameOnly(5, 9, "Movement keys: WASD");
+	nameOnly(5, 12, "Shoot: J");
+	nameOnly(5, 15, "1. Go back");
 }
 
 void windowGame(){

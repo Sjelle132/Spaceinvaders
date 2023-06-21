@@ -7,10 +7,7 @@
 
 #include "states.h"
 
-int8_t stateStartGame = 0;
-int8_t stateReader = 1;
-
-uint8_t processInput(uint8_t state, uint8_t input,spaceship_t* spaceship) {
+uint8_t processInput(uint8_t state, uint8_t input,int8_t spaceship) {
 	uint8_t newState = state;
 
 	switch (state) {
@@ -49,20 +46,20 @@ uint8_t processInput(uint8_t state, uint8_t input,spaceship_t* spaceship) {
 		break;
 
 	case GameEasy:
-		if (input == 'b') {
-			newState = MainMenu;
+		if (spaceship == 0) {
+			newState = GameOver;
 		}
 		break;
 
 	case GameMedium:
-		if (input == 'b') {
-			newState = MainMenu;
+		if (spaceship == 0) {
+			newState = GameOver;
 		}
 		break;
 
 	case GameHard:
-		if (input == 'b') {
-			newState = MainMenu;
+		if (spaceship == 0) {
+			newState = GameOver;
 		}
 		break;
 
@@ -98,14 +95,17 @@ uint8_t stateUpdate(uint8_t state) {
 		break;
 	case GameHard:
 		stateGameHard();
-
+		break;
 	case GameOver:
 		stateGameOver();
 		break;
 	}
+	return state;
 }
 
-int16_t playerBulletSpeed, enemyBulletSpeed, bossBulletSpeed, enemyMovementSpeed, bossMovementSpeed = 0;
+int8_t stateStartGame = 0;
+int16_t playerBulletSpeed, enemyBulletSpeed,
+bossBulletSpeed, enemyMovementSpeed, bossMovementSpeed = 0;
 
 void stateStartMenu() {
 	windowStart();
@@ -113,7 +113,6 @@ void stateStartMenu() {
 
 void stateMainMenu() {
 	stateStartGame = 0;
-	stateReader = 1;
 	windowMainMenu();
 }
 
@@ -128,7 +127,6 @@ void stateHelp() {
 void stateGameEasy() {
 	windowGame();
 	stateStartGame = 1;
-	stateReader = 0;
 	playerBulletSpeed = 100;
 	enemyBulletSpeed = 100;
 	enemyMovementSpeed = 200;
@@ -139,19 +137,26 @@ void stateGameEasy() {
 void stateGameMedium(){
 	windowGame();
 	stateStartGame = 1;
-	stateReader = 0;
 	playerBulletSpeed = 100;
+	enemyBulletSpeed = 100;
+	enemyMovementSpeed = 150;
+	bossBulletSpeed = 20;
+	bossMovementSpeed = 150;
 }
 
 void stateGameHard(){
 	windowGame();
 	stateStartGame = 1;
-	stateReader = 0;
 	playerBulletSpeed = 100;
+	enemyBulletSpeed = 100;
+	enemyMovementSpeed = 10;
+	bossBulletSpeed = 10;
+	bossMovementSpeed = 150;
 }
 
-void stateGameOver(){
+void stateGameOver(spaceship_t* spaceship){
 	stateStartGame = 0;
-	stateReader = 1;
 	windowGameOver();
+
+
 }

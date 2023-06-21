@@ -14,9 +14,19 @@ volatile uint32_t elapsed_time_enemyMovement = 0;
 volatile uint32_t elapsed_time_bossBullet = 0;
 volatile uint32_t elapsed_time_bossMovement = 0;
 volatile uint32_t elapsed_time_asteroid = 0;
+volatile uint32_t elapsed_time_powerup = 0;
+
+	timeS_t tid = {0,0,0,0,0,0};
 
 //init time to 00:00:00
-timeS_t tid = {0,0,0,0,0,0};
+void resetTimers(){
+	tid.miliseconds = 0;
+	tid.seconds = 0;
+	tid.hndrseconds = 0;
+	tid.minutes = 0;
+	tid.hours = 0;
+	tid.flag = 0;
+}
 
 void configTimer(){
 	RCC->APB2ENR |= RCC_APB2Periph_TIM15; // Enable clock line to timer 15;
@@ -24,13 +34,11 @@ void configTimer(){
 	TIM15->ARR = 63000; // Set reload value (63000)
 	TIM15->PSC = 0; // Set prescale value
 	TIM15->DIER |= 0x0001; // Enable timer 15 interrupts
-	TIM15->CR1 = 0; // Configure timer 15
 
 	NVIC_SetPriority(TIM1_BRK_TIM15_IRQn, 0); // Set interrupt priority
 	NVIC_EnableIRQ(TIM1_BRK_TIM15_IRQn); // Enable interrupt
-
-
 }
+
 void TIM1_BRK_TIM15_IRQHandler(void) {
 
 	//time for LCD display
@@ -64,6 +72,7 @@ void TIM1_BRK_TIM15_IRQHandler(void) {
 	elapsed_time_bossBullet++;
 	elapsed_time_bossMovement++;
 	elapsed_time_asteroid++;
+	elapsed_time_powerup++;
 
 	//set flag high for lcdTimeDisplay under lcd.c
 	tid.flag = 1;
@@ -129,5 +138,5 @@ int32_t returnMilisec(){
 }
 
 int32_t returnHNDR(){
-		return tid.hndrseconds;
+	return tid.hndrseconds;
 }

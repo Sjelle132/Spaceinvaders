@@ -8,24 +8,20 @@
 #include "bullet.h"
 
 void initBullet(bullet_t* bullet,spaceship_t* spaceship){
-	bullet->posX = spaceship->posX +2;
+	bullet->posX = spaceship->posX + 2;
 	bullet->posY = spaceship->posY;
-	bullet->velX = 0;
-	bullet->velY = 0;
 	bullet->true = 1;
 }
 
 void spawnBullet(bullet_t* bullet){
 	bullet->posX = 1000;
 	bullet->posY = 1000;
-	bullet->velX = 0;
-	bullet->velY = 0;
 	bullet->true = 1;
 }
 
 void createBullet(bullet_t* bullet ){
 	if (bullet->true) {
-		gotoxy(bullet->posX,bullet->posY);
+		gotoxy(bullet->posX, bullet->posY);
 		printf("%c", 111);
 	}
 }
@@ -42,38 +38,21 @@ void updateBullet(bullet_t* bullet) {
 }
 
 void removeBullet(bullet_t* bullet) {
-	gotoxy(bullet->posX,bullet->posY);
+	gotoxy(bullet->posX, bullet->posY);
 	printf("%c", 32);
 }
 
-static int score = 0;
+int score = 0;
 
 // interactions
 void interactionsPlayerBulletHitEnemy(enemies_t enemies[], bullet_t* bullet ){
-
 	//If spaceship shoots enemy, life decrements
 	for (int i = 0; i < 5; i++) { //5 skal ændres til enemy count, men det kan Liou måske gøre?
-		if (bullet->posX == enemies[i].posX && bullet->posY == enemies[i].posY && enemies[i].life > 0 || (bullet->posX == enemies[i].posX-1 && bullet->posY == enemies[i].posY && enemies[i].life > 0)) {
+		if ((bullet->posX == enemies[i].posX && bullet->posY == enemies[i].posY && enemies[i].life > 0) || (bullet->posX == enemies[i].posX-1 && bullet->posY == enemies[i].posY && enemies[i].life > 0)) {
 			enemies[i].life--;
 			score++;
 		}
 	}
-
-	//display of score in LCD
-	int scoreOneOffset = 7;
-	int scoreTenOffset = 6;
-	int scoreOne = score % 10;
-	int scoreTen = score / 10;
-
-	for(int j = 0; j < 5; j++){
-		buffer[j+(scoreOneOffset * 5)+(128 * 2)] = character_data[scoreOne + 16][j];
-	}
-	lcd_push_buffer(buffer);
-
-	for(int j = 0; j < 5; j++){
-		buffer[j+(scoreTenOffset * 5)+(128 * 2)] = character_data[scoreTen + 16][j];
-	}
-	lcd_push_buffer(buffer);
 }
 
 //If spaceship shoots boss, life decrements

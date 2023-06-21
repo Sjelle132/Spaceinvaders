@@ -6,11 +6,6 @@
  */
 
 #include "enemies.h"
-#include "pins.h"
-#include "uart.h"
-#include <math.h>
-#include "vector.h"
-#include "timers.h"
 
 #define EnemyCount 5
 
@@ -36,11 +31,11 @@ void createEnemies(enemies_t enemies[]) {
 }
 
 //update enemies position
-void updateEnemies(enemies_t enemies[]){
+void updateEnemies(enemies_t enemies[], spaceship_t* spaceship){
 	for (int i = 0; i < EnemyCount; i++) {
 		if (enemies[i].posX >= 152 || enemies[i].posX <= 3) {
 			removeEnemies(enemies);
-			enemies[i].life = 0;
+			spaceship->life = 0;
 		} else if (enemies[i].life > 0)  {
 			enemies[i].posX -= 1;
 			enemies[i].posX = enemies[i].posX + enemies[i].velX;
@@ -126,15 +121,8 @@ void interactionsEnemyBulletHitPlayer(enemyBullet_t enemyBullet[], spaceship_t* 
 				(enemyBullet[i].posX == spaceship->posX+1 && enemyBullet[i].posY == spaceship->posY+1) ||
 				(enemyBullet[i].posX == spaceship->posX+2 && enemyBullet[i].posY == spaceship->posY)
 		) {
-			for(int j = 0; j < 5; j++){
-				//character_data[[32;126]
-				buffer[j+ (35) + (spaceship->life*5)] = character_data[32-32][j];
-			}
-			lcd_push_buffer(buffer);
-
 			//if enemyBullet hits -> spaceship life goes -1
 			spaceship->life--;
-			break;
 		}
 	}
 }

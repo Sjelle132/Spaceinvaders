@@ -124,8 +124,6 @@ void interactionsBossBulletHitPlayer(bossBullet_t bossBullet[], spaceship_t* spa
 
 			//if enemyBullet hits -> spaceship life goes -1
 			spaceship->life = 0;
-			gotoxy(20,10);
-			printf("%d", spaceship->life);
 			break;
 
 		}

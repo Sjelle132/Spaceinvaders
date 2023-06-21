@@ -1,26 +1,25 @@
-
-#include <states.h>
-#include "stm32f30x_conf.h" // STM32 config
+#include "30010_io.h"
+#include "ansi.h"
+#include "asteroids.h"
+#include "boss.h"
+#include "bullet.h"
+#include "balls.h"
+#include "charset.h"
+#include "enemies.h"
+#include "gameState.h"
+#include "lcd.h"
+#include "lut.h"
+#include "states.h"
+#include "stm32f30x_conf.h"
 #include "stdio.h"
 #include "stdint.h"
-#include "30010_io.h" // Input/output library for this course
-#include "ansi.h"
-#include "lut.h"
-#include "pins.h"
-#include "vector.h"
-#include "balls.h"
-#include "window.h"
-#include "lcd.h"
-#include "charset.h"
-#include "timers.h"
 #include "spaceship.h"
+#include "timers.h"
 #include "uart.h"
-#include "bullet.h"
-#include "gameState.h"
-#include "enemies.h"
-#include "boss.h"
-#include "asteroids.h"
-
+#include "vector.h"
+#include "window.h"
+#include "pins.h"
+#include "powerup.h"
 
 int main(void)
 {
@@ -33,9 +32,10 @@ int main(void)
 	configTimer();
 	windowStart();
 	uint8_t currentState = StartMenu;
-	lcd_t lcd;
-	initlcd(&lcd);
-	lcdWriteText("Health: ***", 0);
+
+	//initialize lcd
+	initlcd();
+	lcdWriteText("Health:", 0);
 	lcdWriteText("Time:", 1);
 	lcdWriteText("Score:", 2);
 
@@ -70,37 +70,68 @@ int main(void)
 		spawnBullet(&bullet[i]);
 	}
 
+	//init powerups
+	powerup_t powerup;
+	initPowerup(&powerup);
+
 	//initialize flags for bullet and spaceship
-	int16_t flagspaceship = 0;
+	int8_t flagspaceship = 0;
 	int8_t i = 0;
-	int32_t spawntime = 0;
+	int16_t spawntime = 0;
 	int8_t bossCreated = 0;
+
 
 
 	//main loop
 	while(1){
-
 		//Reads gameState in order to change LED color between red and green.
-		setLedForGame(stateReader);
+		setLedForGame(stateStartGame);
 
-
-		//reading states
-		if(stateReader == 1 && stateStartGame == 0){
+		if(!stateStartGame){
+			//reading states
 			uint8_t inputKB = uart_get_char();
-			uint8_t newState = processInput(currentState, inputKB, &spaceship);
+			uint8_t newState = processInput(currentState, inputKB, spaceship.life);
 
 			if (newState != currentState){
 				stateUpdate(newState);
 				currentState = newState;
 			}
+
+			if(spaceship.life == 0){
+				spaceship.life = 3;
+				initSpaceship(&spaceship);
+				initEnemies(enemies);
+				initEnemyBullet(enemies,enemyBullet);
+				initAsteroids(asteroid);
+				initPowerup(&powerup);
+				score = 0;
+				configTimer();
+				resetTimers();
+				for (int j = 0; j < 10; j++){
+					removeBullet(&bullet[j]);
+					spawnBullet(&bullet[j]);
+				}
+			}
 		}
 
-		else if(stateStartGame == 1 && stateReader == 0){
+		else if(stateStartGame){
+			//enable clock
 			TIM15->CR1 = 1;
-			lcdTimeDisplay();
 
+			//different displays on LCD
+			lcdHealthDisplay(spaceship.life);
+			lcdTimeDisplay();
+			lcdScoreDisplay();
+
+			//draw and remove objects
 			drawAsteroid(asteroid);
-			removeAsteroid(asteroid);
+			createEnemies(enemies);
+			removeEnemies(enemies);
+			enemyShoot(enemyBullet, enemies);
+			removeEnemyShoot(enemyBullet);
+
+			//display powerup
+			drawPowerup(&powerup);
 
 			//reads keyboard input all the time
 			uint8_t directionState = keyboardController();
@@ -115,6 +146,17 @@ int main(void)
 			}
 			flagspaceship=returnMilisec();
 
+			//Detects if powerup is picked up
+			collisionDetection(&powerup, &spaceship);
+
+			//If powerup is picked up, functions lasts for 10 sec.
+			if (powerup.flag == 1){
+				if (elapsed_time_powerup >= 10000 ){
+					elapsed_time_powerup = 0;
+					powerup.flag = 0;
+				}
+			}
+
 			//creates 10 bullets
 			for (int j = 0; j < 10; j++){
 				createBullet(&bullet[j]);
@@ -124,13 +166,14 @@ int main(void)
 			if(64 == directionState && !(spawntime == returnHNDR())){
 				removeBullet(&bullet[i]);
 				initBullet(&bullet[i], &spaceship);
-				if(i<10)
+				if(i < 10)
 					i++;
-				if(i>=10)
-					i=0;
+				if(i >= 10)
+					i = 0;
 				spawntime=returnHNDR();
 			}
 
+			//bullet animation and interaction
 			if (elapsed_time_playerBullet >= playerBulletSpeed ){
 				elapsed_time_playerBullet = 0;
 				bullet->true = 1;
@@ -138,28 +181,17 @@ int main(void)
 					removeBullet(&bullet[j]);
 					updateBullet(&bullet[j]);
 					applyGravity(asteroid, &bullet[j]);
-			//		collisionDetectionA(asteroid, &bullet[j]);
+					//collisionDetectionA(asteroid, &bullet[j]);
 					interactionsPlayerBulletHitEnemy(enemies, &bullet[j]);
 					interactionsPlayerBulletHitBoss(boss, &bullet[j] );
 				}
 			}
 
-			/*
-			 * Regel:
-			 * For det gældende object der trackes og mister liv, skal interactionen ligge i tilhørende elapsed time
-			 * Altså når vi tracker om enemies bliver ramt, ligger dens interaction i elapsed_time_enemy
-			 * Dermed opdateres tracking af om bullets rammer synkront med opdatering af enemies.
-			 *
-			 */
-
 			//Updating enemies
 			if (elapsed_time_enemyMovement  >= enemyMovementSpeed ) {
 				elapsed_time_enemyMovement  = 0;
-				updateEnemies(enemies);
+				updateEnemies(enemies, &spaceship);
 			}
-
-			createEnemies(enemies);
-			removeEnemies(enemies);
 
 			if (elapsed_time_enemyBullet >= enemyBulletSpeed ) {
 				elapsed_time_enemyBullet = 0;
@@ -167,50 +199,47 @@ int main(void)
 				interactionsEnemyBulletHitPlayer(enemyBullet, &spaceship);
 			}
 
-			enemyShoot(enemyBullet,enemies);
-			removeEnemyShoot(enemyBullet);
-
-
 			//sum of all HP from enemies
 			uint16_t EnemyLivesCount = isAllEnemyDead(enemies, &spaceship);
-
-			gotoxy(6,6);
-			printf("%02d",EnemyLivesCount);
-
-			if(EnemyLivesCount <= 1 && !bossCreated){
+			if(EnemyLivesCount <= 0 && !bossCreated){
 				initBoss(boss);
 				bossCreated = 1;
 			}
 
+			//boss key
 			if(bossCreated){
 				if (elapsed_time_bossMovement >= bossMovementSpeed) {
 					elapsed_time_bossMovement = 0;
 					updateBoss(boss);
 				}
 
-				createBoss(boss);
-				removeBoss(boss);
-
 				if (elapsed_time_bossBullet >= bossBulletSpeed) {
 					elapsed_time_bossBullet = 0;
 					updateBossShoot(bossBullet, boss);
 					interactionsBossBulletHitPlayer(bossBullet, &spaceship);
 				}
+
+				createBoss(boss);
+				removeBoss(boss);
 				bossShoot(bossBullet,boss);
 				removeBossShoot(bossBullet);
 			}
 
+			//level up
 			if(bossCreated && boss->life <= 0){
 				initEnemies(enemies);
 				initBoss(boss);
+				initPowerup(&powerup);
 				bossCreated = 0;
 				enemyBulletSpeed -= 10;
 				enemyMovementSpeed -= 10;
 				bossMovementSpeed -= 10;
 			}
 
-			if (spaceship.life == 0){
-				stateGameOver();
+			//gameover
+			if (spaceship.life <= 0){
+				lcdInstaDeath();
+				stateGameOver(&spaceship);
 			}
 		}
 	}

@@ -7,12 +7,9 @@
 
 #include "lcd.h"
 
-lcd_t lcd;
 uint8_t buffer[512];
 
-void initlcd(lcd_t* lcd){
-	lcd->i = 0;
-	lcd->j = 0;
+void initlcd(){
 	lcd_init();
 	memset(buffer,0x00,512);
 	lcd_push_buffer(buffer);
@@ -20,23 +17,13 @@ void initlcd(lcd_t* lcd){
 
 void lcdWriteText(char TtD[], int line){
 	int offset = line;
-	for(lcd.i = 0; lcd.i < strlen(TtD); lcd.i++){
-		for(lcd.j = 0; lcd.j < 5; lcd.j++){
+	for(int i = 0; i < strlen(TtD); i++){
+		for(int j = 0; j < 5; j++){
 			//character_data[[32;126]
-			buffer[lcd.j+(5*lcd.i)+(128*offset)] = character_data[TtD[lcd.i]-32][lcd.j];
+			buffer[j+(5*i)+(128*offset)] = character_data[TtD[i]-32][j];
 		}
 	}
 	lcd_push_buffer(buffer);
-}
-
-void lcd_update(){
-	int offset = 3;
-	if(tid.flag){
-		//character_data[[32;126]
-		buffer[lcd.j+(5*lcd.i)+(128*offset)] += character_data[50-32][lcd.j];
-		lcd_push_buffer(buffer);
-		tid.flag = 0;
-	}
 }
 
 void lcdTimeDisplay(){
@@ -81,9 +68,46 @@ void lcdTimeDisplay(){
 		for(int j = 0; j < 5; j++){
 			buffer[j+(5*minOffset - 5)+(128*timeOffset)] = character_data[minTen+16][j];
 		}
-
 		lcd_push_buffer(buffer);
 
 		tid.flag = 0;
 	}
+}
+
+void lcdScoreDisplay(){
+	int scoreOneOffset = 7;
+	int scoreTenOffset = 6;
+	int scoreOne = score % 10;
+	int scoreTen = score / 10;
+
+	for(int j = 0; j < 5; j++){
+		buffer[j+(scoreOneOffset * 5)+(128 * 2)] = character_data[scoreOne + 16][j];
+	}
+	lcd_push_buffer(buffer);
+
+	for(int j = 0; j < 5; j++){
+		buffer[j+(scoreTenOffset * 5)+(128 * 2)] = character_data[scoreTen + 16][j];
+	}
+	lcd_push_buffer(buffer);
+}
+
+void lcdHealthDisplay(int8_t spaceship){
+	lcdInstaDeath();
+	for(int i = 0; i < spaceship; i++){
+		for(int j = 0; j < 5; j++){
+			//character_data[[32;126]
+			buffer[j+ (40) + (i*5)] = character_data[42-32][j];
+		}
+	}
+	lcd_push_buffer(buffer);
+}
+
+void lcdInstaDeath(){
+	for(int i = 0; i < 3; i++){
+		for(int j = 0; j < 5; j++){
+			//character_data[[32;126]
+			buffer[j + (40) + (i*5)] = character_data[32-32][j];
+		}
+	}
+	lcd_push_buffer(buffer);
 }
