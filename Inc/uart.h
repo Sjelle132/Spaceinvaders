@@ -12,11 +12,7 @@
 #include "string.h"
 #include "ansi.h"
 
-
-
 void smthFunny1();
 int32_t keyboardController();
-
-
 
 #endif /* UART_H_ */

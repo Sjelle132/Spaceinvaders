@@ -32,7 +32,6 @@ void prntClk();
 int32_t returnSec();
 int32_t returnMilisec();
 int32_t returnHNDR();
-//void clockCounter(timeS_t* tid);
 void tidCalc (timeS_t* tid);
 
 #endif /* TIMERS_H_ */

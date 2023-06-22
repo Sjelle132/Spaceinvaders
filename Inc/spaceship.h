@@ -22,8 +22,6 @@ typedef struct {
 
 } spaceship_t;
 
-//extern int8_t spaceShipLife;
-
 void initSpaceship(spaceship_t* spaceship);
 void createSpaceship(spaceship_t* spaceship);
 void updateSpaceship(spaceship_t* spaceship, uint8_t joystickState);

@@ -35,14 +35,12 @@ typedef struct {
 
 void initEnemies(enemies_t enemies[]);
 void createEnemies(enemies_t enemies[]);
-void updateEnemies(enemies_t enemies[], spaceship_t* spaceship);
+void updateEnemies(enemies_t enemies[], spaceship_t* spaceship,int8_t powerupFlag);
 void removeEnemies(enemies_t enemies[]);
-
 void initEnemyBullet(enemies_t enemies[],enemyBullet_t enemyBullet[]) ;
 void enemyShoot(enemyBullet_t enemyBullet[],enemies_t enemies[]);
 void updateEnemyShoot(enemyBullet_t enemyBullet[], enemies_t[]);
 void removeEnemyShoot(enemyBullet_t enemyBullet[]);
-
 void interactionsEnemyBulletHitPlayer(enemyBullet_t enemyBullet[], spaceship_t* spaceship);
 uint16_t isAllEnemyDead(enemies_t enemies[] ,spaceship_t* spaceship);
 

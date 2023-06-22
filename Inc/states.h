@@ -41,7 +41,6 @@ void stateGameEasy();
 void stateGameMedium();
 void stateGameHard();
 void stateGameOver();
-
 uint8_t processInput(uint8_t state, uint8_t input, int8_t spaceship);
 uint8_t stateUpdate(uint8_t state);
 

@@ -19,14 +19,11 @@ typedef struct{
 	int8_t collected;
 } powerup_t;
 
-
-
 void initPowerup(powerup_t* powerup);
 void drawPowerup(powerup_t* powerup);
 void removePowerup(powerup_t* powerup);
-//void collisionDetection(powerup_t* powerup, spaceship_t* spaceship);
 void collisionDetection(powerup_t* powerup, spaceship_t* spaceship);
-//void powerupSpell (powerup_t* powerup,bullet_t bullet[]);
+
 
 
 #endif /* POWERUPH */

@@ -13,8 +13,6 @@
 #include "ansi.h"
 #include "lcd.h"
 
-
-
 typedef struct {
 
 	int16_t posX;
@@ -35,7 +33,6 @@ void initBoss(boss_t boss[]);
 void createBoss(boss_t boss[]);
 void updateBoss(boss_t boss[]);
 void removeBoss(boss_t boss[]);
-
 void updateBossShoot(bossBullet_t bossBullet[], boss_t boss[]);
 void bossShoot(bossBullet_t bossBullet[], boss_t boss[]);
 void initBossBullet(bossBullet_t bossBullet[], boss_t boss[]);
