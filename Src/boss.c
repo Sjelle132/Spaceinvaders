@@ -7,9 +7,7 @@
 
 #include "boss.h"
 
-
 #define EnemyCount 5
-
 
 void initBoss(boss_t boss[]){
 	for (int i = 0; i < 1; i++) {
@@ -48,7 +46,6 @@ void updateBoss(boss_t boss[]) {
 
 
 void removeBoss(boss_t boss[]) {
-
 	for (int i = 0; i < 1; i++){
 		if (boss[i].life > 0) {
 			gotoxy(boss[i].posX+1,boss[i].posY);
@@ -60,7 +57,6 @@ void removeBoss(boss_t boss[]) {
 
 
 void initBossBullet(bossBullet_t bossBullet[], boss_t* boss) {
-
 	for (int i = 0; i < 1; i++){
 		if (boss[i].life > 0) {
 			bossBullet[i].posX = boss[i].posX;
@@ -73,7 +69,6 @@ void initBossBullet(bossBullet_t bossBullet[], boss_t* boss) {
 void bossShoot(bossBullet_t bossBullet[], boss_t* boss){
 	for (int i = 0; i<1;i++){
 		if (bossBullet[i].true){
-
 			gotoxy(bossBullet[i].posX-1,bossBullet[i].posY);
 			printf("%c", 111);
 		} else if (!bossBullet[i].true && boss[i].life > 0) {
@@ -96,8 +91,6 @@ void updateBossShoot(bossBullet_t bossBullet[], boss_t* boss){
 }
 
 void removeBossShoot(bossBullet_t bossBullet[]){
-
-
 	for (int i = 0; i < 1; i++) {
 		if (bossBullet[i].true){
 			gotoxy(bossBullet[i].posX,bossBullet[i].posY);
@@ -121,11 +114,9 @@ void interactionsBossBulletHitPlayer(bossBullet_t bossBullet[], spaceship_t* spa
 				(bossBullet[i].posX == spaceship->posX+1 && bossBullet[i].posY == spaceship->posY+1) ||
 				(bossBullet[i].posX == spaceship->posX+2 && bossBullet[i].posY == spaceship->posY)
 		) {
-
 			//if enemyBullet hits -> spaceship life goes -1
 			spaceship->life = 0;
 			break;
-
 		}
 	}
 }

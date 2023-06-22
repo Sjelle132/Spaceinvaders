@@ -6,7 +6,6 @@
 #include "balls.h"
 #include "charset.h"
 #include "enemies.h"
-#include "gameState.h"
 #include "lcd.h"
 #include "lut.h"
 #include "states.h"
@@ -181,7 +180,6 @@ int main(void)
 					removeBullet(&bullet[j]);
 					updateBullet(&bullet[j]);
 					applyGravity(asteroid, &bullet[j]);
-					//collisionDetectionA(asteroid, &bullet[j]);
 					interactionsPlayerBulletHitEnemy(enemies, &bullet[j]);
 					interactionsPlayerBulletHitBoss(boss, &bullet[j] );
 				}
@@ -190,9 +188,10 @@ int main(void)
 			//Updating enemies
 			if (elapsed_time_enemyMovement  >= enemyMovementSpeed ) {
 				elapsed_time_enemyMovement  = 0;
-				updateEnemies(enemies, &spaceship);
+				updateEnemies(enemies, &spaceship,powerup.flag);
 			}
 
+			//Update enemies bullet & interaction
 			if (elapsed_time_enemyBullet >= enemyBulletSpeed ) {
 				elapsed_time_enemyBullet = 0;
 				updateEnemyShoot(enemyBullet,enemies);

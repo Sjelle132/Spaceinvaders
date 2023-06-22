@@ -46,7 +46,7 @@ void TIM1_BRK_TIM15_IRQHandler(void) {
 	if (tid.miliseconds == 100){
 		tid.hndrseconds++;
 		tid.miliseconds = 0;
-		//tid.flag = 1;
+
 	} else if(tid.hndrseconds == 10){
 		tid.seconds++;
 		tid.hndrseconds = 0;
@@ -64,8 +64,7 @@ void TIM1_BRK_TIM15_IRQHandler(void) {
 		tid.hours = tid.hours;
 	}
 
-	//test enemies - Increment elapsed time    <- skal det her stå der?
-	//increment the global variables
+	//increment the time variables
 	elapsed_time_playerBullet++;
 	elapsed_time_enemyBullet++;
 	elapsed_time_enemyMovement++;

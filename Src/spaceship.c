@@ -14,7 +14,7 @@ void initSpaceship(spaceship_t* spaceship) {
 	spaceship->posX = 5;
 	spaceship->posY = 20;
 	spaceship->life = 3;
-	//spaceShipLife = spaceship->life;
+
 }
 
 //create spaceship

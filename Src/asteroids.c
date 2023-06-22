@@ -60,35 +60,3 @@ void applyGravity(asteroids_t asteroid[], bullet_t* bullet) {
 		}
 	}
 }
-
-/*
- * not used
-void removeAsteroid(asteroids_t asteroid[]) {
-	for (int i = 0; i < numAsteroids; i++){
-		if (asteroid[i].life == 0){
-			gotoxy(asteroid[i].posX,asteroid[i].posY);
-			printf("%c, %d",32, asteroid[i].posX);
-			gotoxy(asteroid[i].posX,asteroid[i].posY+1);
-			printf("%c",32);
-			gotoxy(asteroid[i].posX+1,asteroid[i].posY);
-			printf("%c",32);
-			gotoxy(asteroid[i].posX-1,asteroid[i].posY);
-			printf("%c",32);
-		}
-	}
-}
-*/
-/*
-//not used
-void collisionDetectionA(asteroids_t asteroid[], bullet_t* bullet) {
-	for (int i = 0; i < 5; i++){
-		if ((bullet->posX >= asteroid[i].posX +1  && bullet->posX <= asteroid[i].posX + 1) &&
-				(bullet->posY >= asteroid[i].posY - 1 && bullet->posY <= asteroid[i].posY + 1)) {
-			asteroid[i].life -= 1;
-		}
-	}
-}*/
-
-
-
-

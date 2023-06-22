@@ -10,8 +10,8 @@ Author: filip
 #include "bullet.h"
 
 void initPowerup(powerup_t* powerup) {
-    powerup->posX = 20; //(rand() % 51) + 10; // Generates a random value between 10 and 60 (inclusive)
-    powerup->posY = 20; //(rand() % 36) + 5;  // Generates a random value between 5 and 55 (inclusive)
+    powerup->posX = 20;
+    powerup->posY = 20;
     powerup->enable = 1;
     powerup->flag = 0;
 }
@@ -46,7 +46,6 @@ void removePowerup(powerup_t* powerup){
     printf("%c",32);
     }
 }
-
 
 void collisionDetection(powerup_t* powerup, spaceship_t* spaceship) {
     if ((spaceship->posX +2 >= powerup->posX  && spaceship->posX -2 <= powerup->posX) &&

@@ -8,11 +8,11 @@
 #include "uart.h"
 
 int32_t keyboardController() {
-	int8_t arrayBogstaver[256];
-	int8_t *parray = arrayBogstaver;
+	int8_t arrayBogstaver[256]; //not used
+	int8_t *parray = arrayBogstaver; //not used
 	int8_t bogstav = uart_get_char();
 	int8_t directionsState = 0;
-	int k = 0;
+	int k = 0; //not used
 
 	if (bogstav != NULL) {
 		if (bogstav == 'w'){

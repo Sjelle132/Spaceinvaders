@@ -149,7 +149,7 @@ void stateGameHard(){
 	stateStartGame = 1;
 	playerBulletSpeed = 100;
 	enemyBulletSpeed = 100;
-	enemyMovementSpeed = 10;
+	enemyMovementSpeed = 100;
 	bossBulletSpeed = 10;
 	bossMovementSpeed = 150;
 }

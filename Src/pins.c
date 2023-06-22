@@ -37,7 +37,7 @@ int32_t readJoystick(){
 }
 
 
-//not used
+//not used, for exercise
 void setLed(){
 
 	int16_t joystickState = readJoystick();
@@ -82,17 +82,21 @@ void setLed(){
 
 void setLedForGame(int8_t f){
 	if (f == 0) {
+		//set LED to pink
 		GPIOA->ODR |= (0x0001 << 9);
 		GPIOC->ODR |= (0x0001 << 7);
 	} else {
+		//clears registers
 		GPIOA->ODR &= ~(0x0001 << 9);
 		GPIOC->ODR &= ~(0x0001 << 7);
 	}
 
 	if (f == 1) {
+		//set LED to green
 		GPIOA->ODR |= (0x0001 << 9);
 		GPIOB->ODR |= (0x0001 << 4);
 	} else {
+		//clears registers
 		GPIOA->ODR &= ~(0x0001 << 9);
 		GPIOB->ODR &= ~(0x0001 << 4);
 	}

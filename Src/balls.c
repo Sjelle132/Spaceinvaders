@@ -24,7 +24,6 @@ void updatePos(ball_t* ball){
 		ball->hit += 1;
 	}
 	if(ball->posX >= 15 || ball->posX <= 2){
-	//	ball->velX *= -1;
 		ball->hit += 1;
 	}
 

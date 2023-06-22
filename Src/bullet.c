@@ -47,7 +47,7 @@ int score = 0;
 // interactions
 void interactionsPlayerBulletHitEnemy(enemies_t enemies[], bullet_t* bullet ){
 	//If spaceship shoots enemy, life decrements
-	for (int i = 0; i < 5; i++) { //5 skal ændres til enemy count, men det kan Liou måske gøre?
+	for (int i = 0; i < 5; i++) {
 		if ((bullet->posX == enemies[i].posX && bullet->posY == enemies[i].posY && enemies[i].life > 0) || (bullet->posX == enemies[i].posX-1 && bullet->posY == enemies[i].posY && enemies[i].life > 0)) {
 			enemies[i].life--;
 			score++;
@@ -57,7 +57,7 @@ void interactionsPlayerBulletHitEnemy(enemies_t enemies[], bullet_t* bullet ){
 
 //If spaceship shoots boss, life decrements
 void interactionsPlayerBulletHitBoss(boss_t boss[], bullet_t* bullet ){
-	for (int i = 0; i < 1; i++) { //5 skal ændres til enemy count, men det kan Liou måske gøre?
+	for (int i = 0; i < 1; i++) {
 		if (bullet->posX == boss[i].posX && bullet->posY == boss[i].posY && boss[i].life > 0) {
 			boss[i].life-- ;
 			score++;

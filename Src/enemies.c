@@ -31,12 +31,12 @@ void createEnemies(enemies_t enemies[]) {
 }
 
 //update enemies position
-void updateEnemies(enemies_t enemies[], spaceship_t* spaceship){
+void updateEnemies(enemies_t enemies[], spaceship_t* spaceship,int8_t powerupFlag){
 	for (int i = 0; i < EnemyCount; i++) {
 		if (enemies[i].posX >= 152 || enemies[i].posX <= 3) {
 			removeEnemies(enemies);
 			spaceship->life = 0;
-		} else if (enemies[i].life > 0)  {
+		} else if (enemies[i].life > 0 && !powerupFlag)  {
 			enemies[i].posX -= 1;
 			enemies[i].posX = enemies[i].posX + enemies[i].velX;
 			enemies[i].posY = enemies[i].posY + enemies[i].velY;
